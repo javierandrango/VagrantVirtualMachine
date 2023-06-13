@@ -37,7 +37,8 @@ Vagrant.configure("2") do |config|
     # Use --user after the python package name to store the package in the right directory
     pip3 install numpy --user
     pip3 install flask --user
-    
+    pip3 install reportlab --user
+	
     # Install postgreSQL and python package:
     sudo apt-get update
     sudo apt-get install postgresql postgresql-contrib
@@ -49,7 +50,7 @@ Vagrant.configure("2") do |config|
     apt-get -qqy install make zip unzip postgresql
     su postgres -c 'createuser -dRS vagrant'
     su vagrant -c 'createdb'
-    su vagrant -c 'createdb news'
+    su vagrant -c 'createdb newsdata'
 
     vagrantTip="[35m[1mThe shared directory is located at /vagrant\\nTo access your shared files: cd /vagrant[m"
     echo -e $vagrantTip > /etc/motd
