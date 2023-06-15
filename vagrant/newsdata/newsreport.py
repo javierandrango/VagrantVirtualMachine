@@ -1,26 +1,19 @@
 #!/usr/bin/env python3
 #
-# Reporting tool that prints out reports based on the data in the database
+# Reporting tool that prints out reports based on the data in the DB newsdata
 
 import psycopg2
 import numpy as np
 
-DBNAME = "news"
+DBNAME = "newsdata"
 
 db = psycopg2.connect(database=DBNAME)
 c = db.cursor()
 
 # queries list
 queries = []
+
 # query 1:
-# General query to extract valuable information
-# code examples to practice:
-# select path, count(*) as num from log  group by path having path like '%candidate-is-jerk';
-# select title,slug,count(*) as num from articles left join log on log.path like '%'||articles.slug group by title,slug order by num desc;
-# delete views: DROP VIEW view_name;
-
-
-# query 2:
 # What are the most popular three articles of all time?
 queries.append(
     '''
@@ -37,7 +30,7 @@ queries.append(
     '''
 )
 
-# query 3:
+# query 2:
 # Who are the most popular article authors of all time?
 queries.append(
     '''
@@ -48,10 +41,8 @@ queries.append(
     '''
 )
 
-# query 4:
+# query 3:
 # On which days did more than 1% of requests lead to errors?
-# show all 4xx errors and group time by day : 
-# select date_trunc('day',time) as day, count(status) from log where status like '4%'group by day;
 queries.append(
     '''
     create view total_status as
