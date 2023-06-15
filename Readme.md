@@ -24,7 +24,7 @@ vagrant --version
 ## Run the Virtual Machine
 Download the Virtual Machine configuration, cloning this repository into a directory in your computer:
 ```bash
-git clone xxxxxxx.git
+git clone https://github.com/javierandrango/VagrantVirtualMachine.git
 ```
 change the directory to the vagrant subdirectory. Use the comand `ls` to show the files inside the subdirectory.
 ```bash
@@ -35,11 +35,18 @@ Inside the vagrant subdirecctory there is a file `Vagrantfile` that contains all
 ```bash
 vagrant up
 ```
-When the `vagrant up` command is finished running, you will get your shell propmpt back.
+When the `vagrant up` command is finished running, you will get your shell prompt back.
 At this point you are able to log in to the newly Linux virtual Machine. Use the command:
 ```bash
 vagrant ssh
 ```
-**NOTE:** You can use as many terminal as you want, using the command `vagrant ssh` in the proper directory to make multiple operations inside the virtual machine 
+> **NOTE:** You can use as many terminal as you want, using the command `vagrant ssh` in the proper directory to make multiple operations inside the virtual machine 
+
+## Shared folder
+Inside the VM change directory to `/vagrant` and look around with `ls`.
+**Only files inside the VM's `/vagrant` directory are shared with the `vagrant` folder on your computer**. This means that you can edit code in your favorite text editor, and run it inside the VM. The PostgreSQL database itself lives only inside the VM.
+
+# Mainteners
+The content described belongs to the owner of this repository and was developed for educational purposes only. Files and code were generated from scratch following online guides and basic instructions from other repositories. My purpose in making this repository is just to practice and gain experience in software development.
 
 
