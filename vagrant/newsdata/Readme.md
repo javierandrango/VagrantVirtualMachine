@@ -1,23 +1,35 @@
 # Usage
 1. Download the `newsdata.sql` database from : https://drive.google.com/file/d/1L7yx9MBTK3Y_0dBFVGaD_ewtOnSva5hz/view?usp=sharing
 2. Save the `newsdata.sql` file inside the `/vagrant/newsdata` directory
-3. Open a new bash comman line in the `/vagrant` directory:
-    ```bash 
+3. Open a new bash comman line and type:
+    ```bash
+    cd .. # IMPORTANT return or go to /vagrant directory
     vagrant up # optional if the virtual machine was power off
-    vagrant ssh 
+    vagrant ssh # SSH sesion into the VM to give shell access
     ```
 4. The database `newsdata` was already set up inside the `VagrantFile` by now is empty, to check the DB run:
     ```bash
-    psql newsdata
+    psql newsdata # explore the DB
+    ```
+    ```sql 
+    -- single line comment
+    
+    /*
+    * block comments
+    */
+
+    -- shows list of relations inside DB (by now is empty):
     \dt+
+    -- exit the DB (return to VM):
     \q
-    ```
-5. change directory to `/vagrant/newsdata` and `ls` to show the files 
-6. Load the data into the DB:
+    ``` 
+5. Load the data into the DB:
     ```bash
-    cd .. # return to /vagrant directory
-    psql -d newsdata -f newsdata.sql
+    cd /vagrant/newsdata
+    psql -d newsdata -f newsdata.sql # add downloaded data inside DB
     psql newsdata
     ```
-7. Usefull comands to explote the DB:
-    >`\d` and `\dt`, shows list of relations and tables respectively
+    ```sql
+    \dt+ 
+    select * from log limit 2; -- explote info inside a table
+    ```
