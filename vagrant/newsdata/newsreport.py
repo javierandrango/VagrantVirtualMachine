@@ -22,9 +22,9 @@ queries.append(
     FROM articles
     LEFT JOIN log ON log.path like '%'||articles.slug
     LEFT JOIN authors ON articles.author = authors.id
-    GROUP BY authors.name,title ORDER BY views_num DESC;
-    
-    SELECT title,views_num 
+    GROUP BY authors.name,title
+    ORDER BY views_num DESC;
+    SELECT title,views_num
     FROM popular_articles_all_time
     LIMIT 3;
     '''
@@ -45,21 +45,33 @@ queries.append(
 # On which days did more than 1% of requests lead to errors?
 queries.append(
     '''
-    create view total_status as
-    select date_trunc('day',time) as days,count(status) as t_status from log group by days;
-    create view error_status as
-    select date_trunc('day',time) as days, count(status) as e_status from log where status like '4%' group by days;
-
-    select total_status.days,total_status.t_status, error_status.e_status
-    from total_status join error_status
-    on total_status.days = error_status.days and cast(error_status.e_status as float)/cast(total_status.t_status as float)*100 > 1
-    group by total_status.days,total_status.t_status,error_status.e_status;
-    ''' 
+    CREATE view total_status AS
+    SELECT date_trunc('day',time) AS days,COUNT(status) AS t_status
+    FROM log
+    GROUP BY days;
+    CREATE VIEW error_status AS
+    SELECT date_trunc('day',time) AS days, COUNT(status) AS e_status
+    FROM log
+    WHERE status LIKE '4%'
+    GROUP BY days;
+    SELECT total_status.days,total_status.t_status, error_status.e_status
+    FROM total_status JOIN error_status
+    ON total_status.days = error_status.days AND CAST(error_status.e_status AS FLOAT)/CAST(total_status.t_status AS FLOAT)*100 > 1
+    GROUP BY total_status.days,total_status.t_status,error_status.e_status;
+    '''
 )
-
-for count in range(0,len(queries)):
+#print individual report in txt file
+'''
+for count in range(0, len(queries)):
     c.execute(queries[count])
-    # write report into .txt file
-    report=c.fetchall()
-    np.savetxt('report'+str(count)+'.txt',report,delimiter=' || ',fmt='%s')
+    report = c.fetchall()
+    np.savetxt('report' + str(count) + '.txt', report, delimiter=' || ', fmt='%s')
+'''
+
+reportList = []
+for count in range(0, len(queries)):
+    c.execute(queries[count])
+    reportList.append(np.array(c.fetchall(),dtype='str'))
+    
 db.close()
+
