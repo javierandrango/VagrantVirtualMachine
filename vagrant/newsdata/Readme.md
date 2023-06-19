@@ -42,7 +42,7 @@
     select * from log limit 2; -- explote info inside a table
     ```
 5. Run the python script:
-```bash
-python3 python3 newsreport.py
-```
+    ```bash
+    python3 newsreport.py
+    ```
 
