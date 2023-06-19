@@ -37,7 +37,8 @@ Vagrant.configure("2") do |config|
     # Use --user after the python package name to store the package in the right directory
     sudo python3 -m pip install numpy 
     sudo python3 -m pip install flask 
-	
+    sudo python3 -m pip install pandas
+
     # Install postgreSQL and python package adapter:
     sudo apt-get update
     sudo apt-get install postgresql postgresql-contrib -y
