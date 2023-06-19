@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Python DB-API report</title>
+    <style media="screen">
+      p{
+        color: blue;
+        text-align: center;
+      }
+      h1{
+        color: green;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Report</h1>
+    <p>Report log analysis June 19, 2023</p>
+    <!--report to question 1-->
+    <div>
+        <h2>What are the most popular three articles of all time?</h2>
+        <p><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th></th>
+      <th>Article name</th>
+      <th>Total Views</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Candidate is jerk, alleges rival</td>
+      <td>338647</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bears love berries, alleges bear</td>
+      <td>253801</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bad things gone, say good people</td>
+      <td>170098</td>
+    </tr>
+  </tbody>
+</table></p>
+    </div>
+    <!--report to question 2-->
+    <div>
+        <h2>Who are the most popular article authors of all time?</h2>
+        <p><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th></th>
+      <th>Author</th>
+      <th>Total Views</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ursula La Multa</td>
+      <td>507594</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Rudolf von Treppenwitz</td>
+      <td>423457</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Anonymous Contributor</td>
+      <td>170098</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Markoff Chaney</td>
+      <td>84557</td>
+    </tr>
+  </tbody>
+</table></p>
+    </div>
+    <!--report to question 3-->
+    <div>
+        <h2>On which days did more than 1% of requests lead to errors?</h2>
+        <p><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th></th>
+      <th>Year</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2016-07-17</td>
+      <td>2.2626862468027262</td>
+    </tr>
+  </tbody>
+</table></p>
+    </div>
+
+  </body>
+</html>
