@@ -58,7 +58,8 @@ queries.append(
     GROUP BY days;
     SELECT total_status.days,total_status.t_status, error_status.e_status
     FROM total_status JOIN error_status
-    ON total_status.days = error_status.days AND CAST(error_status.e_status AS FLOAT)/CAST(total_status.t_status AS FLOAT)*100 > 1
+    ON total_status.days = error_status.days
+    AND CAST(error_status.e_status AS FLOAT)/CAST(total_status.t_status AS FLOAT)*100 > 1
     GROUP BY total_status.days,total_status.t_status,error_status.e_status;
     '''
 )
@@ -68,7 +69,8 @@ queries.append(
 for count in range(0, len(queries)):
     c.execute(queries[count])
     report = c.fetchall()
-    np.savetxt('report' + str(count) + '.txt', report, delimiter=' || ', fmt='%s')
+    np.savetxt('report' + str(count) + '.txt',
+    report, delimiter=' || ', fmt='%s')
 '''
 
 reportList = []
@@ -80,13 +82,16 @@ db.close()
 
 pd.set_option('display.colheader_justify', 'left')
 # What are the most popular three articles of all time?
-dfReport1 = pd.DataFrame(reportList[0], columns=['Article name', 'Total Views'])
+dfReport1 = pd.DataFrame(reportList[0], columns=['Article name',
+                                                 'Total Views'])
 
 # Who are the most popular article authors of all time?
-dfReport2 = pd.DataFrame(reportList[1], columns=['Author', 'Total Views'])
+dfReport2 = pd.DataFrame(reportList[1], columns=['Author',
+                                                 'Total Views'])
 
 # On which days did more than 1% of requests lead to errors?
-data = [[reportList[2][0][0][:11], str(float(reportList[2][0][2])/float(reportList[2][0][1])*100)]]
+data = [[reportList[2][0][0][:11],
+         str(float(reportList[2][0][2])/float(reportList[2][0][1])*100)]]
 dfReport3 = pd.DataFrame(data, columns=['Year', 'Percentage'])
 
 pageTitle = 'Report'
@@ -137,11 +142,10 @@ html = '''
 
   </body>
 </html>
-'''%(pageTitle,datenow,
-     report1Title,dfReport1.to_html(),
-     report2Title,dfReport2.to_html(),
-     report3Title,dfReport3.to_html())
+''' % (pageTitle, datenow,
+       report1Title, dfReport1.to_html(),
+       report2Title, dfReport2.to_html(),
+       report3Title, dfReport3.to_html())
 
-
-with open('report_db_api.html','w') as f:
+with open('report_db_api.html', 'w') as f:
     f.write(html)
