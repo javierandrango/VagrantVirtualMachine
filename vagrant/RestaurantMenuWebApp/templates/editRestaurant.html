@@ -6,6 +6,19 @@
     <title>Edit Restaurant</title>
 </head>
 <body>
-    <h1>Edit Restaurant {{restaurant_id}}</h1>
+    <header>
+        <h1>Edit Restaurant</h1>
+    </header>
+
+    <nav>
+        <h3><a href="{{url_for('restaurants')}}">Home</a></h3>
+    </nav>
+
+    <main>
+        <form action="{{url_for('editRestaurant',restaurant_id=restaurant.id)}}" method="post">
+            <input type="text" size='31' name="edit_restaurant" placeholder="{{restaurant.name}}">
+            <input type="submit" value="Edit">
+        </form>
+    </main>
 </body>
 </html>
