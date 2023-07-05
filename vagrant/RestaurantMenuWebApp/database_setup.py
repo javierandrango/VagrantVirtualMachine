@@ -1,27 +1,26 @@
-from sqlalchemy import Colum, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-
 class Restaurant(Base):
     __tablename__ = 'restaurant'
-    name = Colum(String(250), nullable=False)
-    id = Colum(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    id = Column(Integer, primary_key=True)
 
 
 class MenuItem(Base):
     __tablename__ = 'menuitem'
-    name = Colum(String(250), nullable=False)
-    id = Colum(Integer, primary_key=True)
-    course = Colum(String(250))
-    description = Colum(String(250))
-    price = Colum(String(250))
-    restaurant_id = Colum(Integer, nullable=False)
+    name = Column(String(250), nullable=False)
+    id = Column(Integer, primary_key=True)
+    course = Column(String(250))
+    description = Column(String(250))
+    price = Column(String(8))
+    restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
     restaurant = relationship(Restaurant)
 
 
-engine = create_engine('sqlite:///restaurant.db')
+engine = create_engine('sqlite:///restaurantmenu.db')
 Base.metadata.create_all(engine)
