@@ -6,6 +6,38 @@
     <title>Restaurants</title>
 </head>
 <body>
-    <h1>Restaurants</h1>
+    <header>
+        <h1>Restaurants</h1>
+    </header>
+
+    <nav>
+        <h3>
+            <a href="{{url_for('newRestaurant')}}">Add New Restaurant</a>
+        </h3>
+    </nav>
+
+    <main>
+        <menu>
+            <!--Iteration over each restaurant-->
+            {%for restaurant in restaurants:%}
+                <div>
+                    <span>{{restaurant.name}}</span>
+                    <menu>
+                        <li>
+                            <a href="{{url_for('editRestaurant',restaurant_id=restaurant.id)}}">
+                                <button type="button">Edit</button>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url_for('deleteRestaurant',restaurant_id=restaurant.id)}}">
+                                <button type="button">Delete</button>
+                            </a>
+                        </li>
+                    </menu>
+                </div>
+            {%endfor%}
+        </menu>
+    </main>
+
 </body>
 </html>

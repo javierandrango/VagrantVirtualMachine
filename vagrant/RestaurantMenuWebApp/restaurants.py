@@ -1,12 +1,22 @@
 from flask import Flask, render_template
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, Restaurant, MenuItem
+
+# DB connection
+engine = create_engine('sqlite:///restaurantmenu.db',connect_args={'check_same_thread': False})
+Base.metadata.bind = engine
+DBsession = sessionmaker(bind=engine)
+session = DBsession()
+
+
 app = Flask(__name__)
-
-
 # home page
 @app.route('/')
 @app.route('/restaurants/')
 def restaurants():
-    return render_template('restaurants.html')
+    restaurants = session.query(Restaurant).all()
+    return render_template('restaurants.html',restaurants=restaurants)
 
 
 # add a new restaurant
