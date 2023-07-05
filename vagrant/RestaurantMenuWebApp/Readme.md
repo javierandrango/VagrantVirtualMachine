@@ -11,3 +11,8 @@
 https://github.com/udacity/Full-Stack-Foundations/blob/master/Lesson_1/lotsofmenus.py
 pip3
 # Usage
+1. Create the Database through Python and add items: 
+    ```bash
+    python3 database_setup.py
+    python3 lotsofmenus.py 
+    ```
