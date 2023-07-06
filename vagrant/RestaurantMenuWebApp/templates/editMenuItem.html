@@ -6,7 +6,76 @@
     <title>Edit Menu Item</title>
 </head>
 <body>
-    <h1>Restaurant {{restaurant_id}}</h1>
-    <h2>menu item {{menuitem_id}}</h2>
+    <hgroup>
+        <h1>Edit Menu Item</h1>
+        <h2>{{restaurant.name}}</h2>
+    </hgroup>
+
+    <nav>
+        <h3><a href="{{url_for('restaurants')}}">Home</a></h3>
+    </nav>
+
+    <main>
+        <form action="{{url_for('editMenuItem',restaurant_id=item.restaurant_id, menuitem_id=item.id)}}" method="post">
+            <table>
+                <tr>
+                    <td><label for="item_name">name: </label></td>
+                    <td><input type="text" name="item_name" size="31" placeholder="{{item.name}}"></td>
+                </tr>
+                <tr>
+                    <td><label for="item_description">description: </label></td>
+                    <td><textarea name="item_description" cols="30" rows="5" placeholder="{{item.description}}"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="item_price">price($): </label></td>
+                    <td><input type="text" name="item_price" size="31" placeholder="{{item.price}}"></td>
+                </tr>
+                <tr>
+                    <td><label for="item_course">course:</label></td>
+                    <td>
+                        <fieldset>
+                            <li>
+                                {%if item.course == 'Appetizer'%}
+                                    <input type="radio" name="item_course" value="Appetizer" checked>
+                                {%else%}
+                                    <input type="radio" name="item_course" value="Appetizer">
+                                {%endif%}
+                                <label for="Appetizer">Appetizer</label>
+                            </li>
+                            <li>
+                                {%if item.course == 'Entree'%}
+                                    <input type="radio" name="item_course" value="Entree" checked>
+                                {%else%}
+                                    <input type="radio" name="item_course" value="Entree">
+                                {%endif%}
+                                <label for="Entree">Entree</label>
+                            </li>
+                            <li>
+                                {%if item.course == 'Desert'%}
+                                    <input type="radio" name="item_course" value="Desert" checked>
+                                {%else%}
+                                    <input type="radio" name="item_course" value="Dessert">
+                                {%endif%}
+                                <label for="Desert">Desert</label>
+                            </li>
+                            <li>
+                                {%if item.course == 'Beverage'%}
+                                    <input type="radio" name="item_course" value="Beverage" checked>
+                                {%else%}
+                                    <input type="radio" name="item_course" value="Beverage">
+                                {%endif%}
+                                <label for="Beverage">Beverage</label>
+                            </li>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td></td>
+                    <td><input type="submit" value="Edit"></td>
+                </tr>
+            </table>
+        </form>
+    </main>
 </body>
 </html>
