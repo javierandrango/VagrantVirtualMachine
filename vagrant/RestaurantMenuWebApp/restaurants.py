@@ -58,9 +58,10 @@ def deleteRestaurant(restaurant_id):
 # restaurant menu principal (all menu items)
 @app.route('/restaurants/<int:restaurant_id>/')
 @app.route('/restaurants/<int:restaurant_id>/menu/')
-def menu(restaurant_id):
-    return render_template('menu.html',
-                           restaurant_id=restaurant_id)
+def menuRestaurant(restaurant_id):
+    menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    return render_template('menu.html', menu=menu, restaurant=restaurant)
 
 
 # add a new menu restaurant
