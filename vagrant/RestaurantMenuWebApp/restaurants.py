@@ -65,10 +65,27 @@ def menuRestaurant(restaurant_id):
     return render_template('menu.html', menu=menu, restaurant=restaurant)
 
 
-# add a new menu restaurant
-@app.route('/restaurants/<int:restaurant_id>/menu/new')
+# add a new menu item
+@app.route('/restaurants/<int:restaurant_id>/menu/new',methods=['GET','POST'])
 def newMenu(restaurant_id):
-    return render_template('newMenu.html', restaurant_id=restaurant_id)
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    if request.method == 'POST':
+        if '$' in request.form['new_price']:
+            price = request.form['new_price']
+        else:
+            price = '$'+ request.form['new_price']
+        
+        new_item = MenuItem(name=request.form['new_name'],
+                             description=request.form['new_description'],
+                             price=price,
+                             course=request.form['new_course'],
+                             restaurant_id=restaurant_id)
+        session.add(new_item)
+        session.commit()
+        
+        return redirect(url_for('menuRestaurant',restaurant_id=restaurant_id))
+    else:
+        return render_template('newMenu.html', restaurant_id=restaurant_id,restaurant=restaurant)
 
 
 # edit a menu item

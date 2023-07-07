@@ -6,7 +6,60 @@
     <title>New Restaurant Menu</title>
 </head>
 <body>
-    <h1>Restaurant {{restaurant_id}}</h1>
-    <h2>New Menu Item</h2>
+    <hgroup>
+        <h1>{{restaurant.name}}</h1>
+        <h2>New Menu Item</h2>
+    </hgroup>
+
+    <nav>
+        <h3><a href="{{url_for('restaurants')}}">Home</a></h3>
+    </nav>
+
+    <main>
+        <form action="{{url_for('newMenu',restaurant_id=restaurant_id)}}" method="post">
+            <table>
+                <tr>
+                    <td><label for="new_name">name: </label></td>
+                    <td><input type="text" name="new_name" size="31" placeholder="new item name"></td>
+                </tr>
+                <tr>
+                    <td><label for="new_description">description: </label></td>
+                    <td><textarea name="new_description" cols="30" rows="5" placeholder="Brief description"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="new_price">price($): </label></td>
+                    <td><input type="text" name="new_price" size="31" placeholder="$0.00"></td>
+                </tr>
+                <tr>
+                    <td><label for="new_course">course:</label></td>
+                    <td>
+                        <fieldset>
+                            <li>
+                                <input type="radio" name="new_course" value="Appetizer">
+                                <label for="Appetizer">Appetizer</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="new_course" value="Entree">
+                                <label for="Entree">Entree</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="new_course" value="Dessert">
+                                <label for="Desert">Desert</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="new_course" value="Beverage">
+                                <label for="Beverage">Beverage</label>  
+                            </li>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Create"></td>
+                </tr>
+            </table>
+        </form>
+    </main>
+
 </body>
 </html>
