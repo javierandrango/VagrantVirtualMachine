@@ -12,7 +12,11 @@
     </hgroup>
 
     <nav>
-        <h3><a href="{{url_for('restaurants')}}">Home</a></h3>
+        <ol>
+            <li><h3><a href="{{url_for('restaurants')}}">Home</a></h3></li>
+            <li><h3><a href="{{url_for('menuRestaurant',restaurant_id=restaurant.id)}}">{{restaurant.name}}</a></h3></li>
+            <li><h3>Edit</h3></li>
+        </ol>
     </nav>
 
     <main>

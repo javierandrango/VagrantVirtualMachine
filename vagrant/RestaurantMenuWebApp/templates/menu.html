@@ -12,16 +12,27 @@
     </hgroup>
 
     <nav>
-        <h3>
-            <a href="{{url_for('restaurants')}}">Home</a>
-            <br> add a return to Restaurants?
-        </h3>
+        <ol>
+            <li><h3><a href="{{url_for('restaurants')}}">Home</a></h3></li>
+            <li><h3>{{restaurant.name}}</h3></li>
+        </ol>
     </nav>
 
     <main>
         <section>
+            <nav>
+                <h3>
+                    <a href="{{url_for('newMenu', restaurant_id=restaurant.id)}}">
+                        <button type="button">New Menu Item</button>
+                    </a>
+                </h3>
+            </nav>
+        </section>
+
+        <section>
             Course option : appetizer , entree, desert, beverage
         </section>
+
         <section>
             <menu>
                 <!--Iteration over each menu item-->

@@ -7,36 +7,53 @@
 </head>
 <body>
     <header>
-        <h1>Restaurants</h1>
+        <h1>Restaurant List</h1>
     </header>
 
     <nav>
-        <h3>
-            <a href="{{url_for('newRestaurant')}}">Add New Restaurant</a>
-        </h3>
+        <ol>
+            <li><h3>Home</h3></li>
+        </ol>
     </nav>
 
     <main>
-        <menu>
-            <!--Iteration over each restaurant-->
-            {%for restaurant in restaurants:%}
-                <div>
-                    <span>{{restaurant.name}}</span>
-                    <menu>
-                        <li>
-                            <a href="{{url_for('editRestaurant',restaurant_id=restaurant.id)}}">
-                                <button type="button">Edit</button>
+        <section>
+            <nav>
+                <h3>
+                    <a href="{{url_for('newRestaurant')}}">
+                        <button type="button">New Restaurant</button>
+                    </a>
+                </h3>
+            </nav>
+        </section>
+        
+        <section>
+            <menu>
+                <!--Iteration over each restaurant-->
+                {%for restaurant in restaurants:%}
+                    <div>
+                        <span>
+                            <a href="{{url_for('menuRestaurant',restaurant_id=restaurant.id)}}">
+                                {{restaurant.name}}
                             </a>
-                        </li>
-                        <li>
-                            <a href="{{url_for('deleteRestaurant',restaurant_id=restaurant.id)}}">
-                                <button type="button">Delete</button>
-                            </a>
-                        </li>
-                    </menu>
-                </div>
-            {%endfor%}
-        </menu>
+                        </span>
+                        <menu>
+                            <li>
+                                <a href="{{url_for('editRestaurant',restaurant_id=restaurant.id)}}">
+                                    <button type="button">Edit</button>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{url_for('deleteRestaurant',restaurant_id=restaurant.id)}}">
+                                    <button type="button">Delete</button>
+                                </a>
+                            </li>
+                        </menu>
+                    </div>
+                {%endfor%}
+            </menu>
+        </section>
+        
     </main>
 
 </body>
