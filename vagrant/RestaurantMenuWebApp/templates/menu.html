@@ -33,46 +33,46 @@
             Add a Filter by option:
             Course: all , appetizer , entree, desert, beverage
         </section>
-
+        
         {%if menu|length == 0%}
             <section>
-                You currently have no menu item 
+                <p>You currently have no menu item</p> 
+            </section>
+        {%else%}
+            <section>
+                {%for course in ['Entree','Dessert','Beverage','Appetizer']%}
+                    <article>
+                        <div><h3>{{course}}</h3></div>
+                        {%for item in menu%}
+                            {%if item.course == course%}
+                                <article>
+                                    <div>
+                                        <span><p>{{item.name}}</p></span>
+                                        <span><p>{{item.price}}</p></span> 
+                                    </div>
+                                    <div>
+                                        <p>{{item.description}}</p>
+                                    </div>
+                                </article>
+                                <menu>
+                                    <li>
+                                        <a href="{{url_for('editMenuItem', restaurant_id=restaurant.id, menuitem_id=item.id)}}">
+                                            <button type="button">Edit</button>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{url_for('deleteMenuItem', restaurant_id=restaurant.id, menuitem_id=item.id)}}">
+                                            <button type="button">Delete</button>
+                                        </a>
+                                    </li>
+                                </menu> 
+                            {%endif%}
+                        {%endfor%}
+                    </article>
+                    <br><br>
+                {%endfor%}   
             </section>
         {%endif%}
-
-        <section>
-            <menu>
-                <!--Iteration over each menu item-->
-                {%for item in menu:%}
-                    <article>
-                        <article>
-                            <div>
-                                <span><p><h3>{{item.name}}</h3></p></span>
-                                <span><p>{{item.price}}</p></span> 
-                            </div>
-                            <div>
-                                <p>{{item.description}}</p>
-                            </div>
-                        </article>
-                        
-                        <menu>
-                            <li>
-                                <a href="{{url_for('editMenuItem', restaurant_id=restaurant.id, menuitem_id=item.id)}}">
-                                    <button type="button">Edit</button>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{url_for('deleteMenuItem', restaurant_id=restaurant.id, menuitem_id=item.id)}}">
-                                    <button type="button">Delete</button>
-                                </a>
-                            </li>
-                        </menu>                  
-                    </article>
-                    <br>
-                {%endfor%}
-            </menu>
-        </section>
-        
     </main>
 </body>
 </html>

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import exc
 from database_setup import Base, Restaurant, MenuItem
 
 # DB connection
@@ -17,6 +18,7 @@ app = Flask(__name__)
 def restaurants():
     restaurants = session.query(Restaurant).all()
     return render_template('restaurants.html',restaurants=restaurants)
+    
 
 
 # add a new restaurant
@@ -29,6 +31,9 @@ def newRestaurant():
         return redirect(url_for('restaurants'))
     else:
         return render_template('newRestaurant.html')
+
+
+    
 
 
 # edit a restaurant
@@ -60,11 +65,17 @@ def deleteRestaurant(restaurant_id):
 @app.route('/restaurants/<int:restaurant_id>/')
 @app.route('/restaurants/<int:restaurant_id>/menu/')
 def menuRestaurant(restaurant_id):
-    menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    if len(menu)==0:
-        print("Nothing added yet")
-    return render_template('menu.html', menu=menu, restaurant=restaurant)
+    try:
+        menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
+        restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+        return render_template('menu.html', menu=menu, restaurant=restaurant)
+    # exception when no restaurant was found (restaurant_id not exist)
+    except exc.NoResultFound:
+        return render_template('pageNotFound.html')
+
+
+
+    
 
 
 # add a new menu item
@@ -102,9 +113,9 @@ def editMenuItem(restaurant_id, menuitem_id):
             item.description = request.form['item_description']
         if request.form['item_price'] != '':
             if '$' in request.form['item_price']:
-                item.price = request.form['item_name']
+                item.price = request.form['item_price']
             else:
-                item.price = '$'+request.form['item_name']
+                item.price = '$'+request.form['item_price']
         if request.form['item_course'] != '':
             item.course = request.form['item_course']
 
