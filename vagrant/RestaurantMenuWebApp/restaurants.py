@@ -62,6 +62,8 @@ def deleteRestaurant(restaurant_id):
 def menuRestaurant(restaurant_id):
     menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    if len(menu)==0:
+        print("Nothing added yet")
     return render_template('menu.html', menu=menu, restaurant=restaurant)
 
 

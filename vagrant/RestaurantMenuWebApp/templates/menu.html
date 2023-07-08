@@ -30,8 +30,15 @@
         </section>
 
         <section>
-            Course option : appetizer , entree, desert, beverage
+            Add a Filter by option:
+            Course: all , appetizer , entree, desert, beverage
         </section>
+
+        {%if menu|length == 0%}
+            <section>
+                You currently have no menu item 
+            </section>
+        {%endif%}
 
         <section>
             <menu>
