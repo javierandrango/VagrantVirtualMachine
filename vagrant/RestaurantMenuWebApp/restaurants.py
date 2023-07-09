@@ -53,8 +53,11 @@ def editRestaurant(restaurant_id):
 @app.route('/restaurants/<int:restaurant_id>/delete/', methods=['GET','POST'])
 def deleteRestaurant(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    menu = session.query(MenuItem).filter_by(restaurant_id=restaurant.id).one()
     if request.method == 'POST':
+        # delete restaurant and menu(if exist)
         session.delete(restaurant)
+        session.delete(menu)
         session.commit()
         return redirect(url_for('restaurants'))
     else:
@@ -72,10 +75,6 @@ def menuRestaurant(restaurant_id):
     # exception when no restaurant was found (restaurant_id not exist)
     except exc.NoResultFound:
         return render_template('pageNotFound.html')
-
-
-
-    
 
 
 # add a new menu item
@@ -104,9 +103,11 @@ def newMenu(restaurant_id):
 # edit a menu item
 @app.route('/restaurants/<int:restaurant_id>/menu/<int:menuitem_id>/edit', methods=['GET','POST'])
 def editMenuItem(restaurant_id, menuitem_id):
-    item = session.query(MenuItem).filter_by(id=menuitem_id).one()
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    if request.method == 'POST':
+    item = session.query(MenuItem).filter_by(id=menuitem_id).one()
+    # check if menu item belong to the restaurant and request POST
+    if restaurant_id == item.restaurant_id and request.method == 'POST':
+        # change the actual value only if exist
         if request.form['item_name'] != '':
             item.name = request.form['item_name']
         if request.form['item_description'] != '':
@@ -121,8 +122,11 @@ def editMenuItem(restaurant_id, menuitem_id):
 
         session.add(item)
         session.commit()
-
         return redirect(url_for('menuRestaurant',restaurant_id=restaurant_id))
+    
+    # when MenuItem(restaurant_id) is different of Restaurant(id)
+    elif restaurant_id != item.restaurant_id:
+        return "out of boundaries"
     else:
         return render_template('editMenuItem.html', restaurant=restaurant, item=item)
 
@@ -132,10 +136,12 @@ def editMenuItem(restaurant_id, menuitem_id):
 def deleteMenuItem(restaurant_id, menuitem_id):
     item = session.query(MenuItem).filter_by(id=menuitem_id).one()
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one() 
-    if request.method == 'POST':
+    if restaurant_id == item.restaurant_id and request.method == 'POST':
         session.delete(item)
         session.commit()
         return redirect(url_for('menuRestaurant', restaurant_id=restaurant.id))
+    elif restaurant_id != item.restaurant_id:
+        return "out of boundaries"
     else:
         return render_template('deleteMenuItem.html', restaurant=restaurant, item=item)
 
