@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import exc
@@ -18,7 +18,6 @@ app = Flask(__name__)
 def restaurants():
     restaurants = session.query(Restaurant).all()
     return render_template('restaurants.html',restaurants=restaurants)
-    
 
 
 # add a new restaurant
@@ -28,12 +27,10 @@ def newRestaurant():
         new_restaurant = Restaurant(name=request.form['new_restaurant'])
         session.add(new_restaurant)
         session.commit()
+        flash('New Restaurant Created!')
         return redirect(url_for('restaurants'))
     else:
         return render_template('newRestaurant.html')
-
-
-    
 
 
 # edit a restaurant
@@ -44,6 +41,7 @@ def editRestaurant(restaurant_id):
         restaurant.name = request.form['edit_restaurant']
         session.add(restaurant)
         session.commit()
+        flash('Updated '+restaurant.name+'!')
         return redirect(url_for('restaurants'))
     else:
         return render_template('editRestaurant.html', restaurant=restaurant)
@@ -53,12 +51,16 @@ def editRestaurant(restaurant_id):
 @app.route('/restaurants/<int:restaurant_id>/delete/', methods=['GET','POST'])
 def deleteRestaurant(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    menu = session.query(MenuItem).filter_by(restaurant_id=restaurant.id).one()
     if request.method == 'POST':
         # delete restaurant and menu(if exist)
         session.delete(restaurant)
-        session.delete(menu)
+        try:
+            menu = session.query(MenuItem).filter_by(restaurant_id=restaurant.id).one()
+            session.delete(menu)
+        except exc.NoResultFound:
+            pass
         session.commit()
+        flash('Restaurant Deleted!')
         return redirect(url_for('restaurants'))
     else:
         return render_template('deleteRestaurant.html', restaurant=restaurant)
@@ -147,5 +149,8 @@ def deleteMenuItem(restaurant_id, menuitem_id):
 
 
 if __name__ == "__main__":
+
+    # to create season for users (used for flash messages)
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
