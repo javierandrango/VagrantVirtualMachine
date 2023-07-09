@@ -30,10 +30,30 @@
         </section>
 
         <section>
-            Add a Filter by option:
-            Course: all , appetizer , entree, desert, beverage
+            {%with messages = get_flashed_messages()%}
+            {%if messages%}
+                <ul>
+                    {%for message in messages%}
+                        <li>{{message}}</li>
+                    {%endfor%}
+                </ul>
+            {%endif%}
+            {%endwith%}
         </section>
-        
+
+        <section>
+            <form action="" method="post">
+                <label for="filter_by">Filter By Course:</label>
+                <select>
+                    <option value="All">All</option>
+                    <option value="Entree">Entree</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Beverage">Beverage</option>
+                    <option value="Appetizer">Appetizer</option>
+                </select>
+            </form>    
+        </section>
+
         {%if menu|length == 0%}
             <section>
                 <p>You currently have no menu item</p> 

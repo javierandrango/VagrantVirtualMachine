@@ -73,9 +73,10 @@ def menuRestaurant(restaurant_id):
     try:
         menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
         restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-        return render_template('menu.html', menu=menu, restaurant=restaurant)
-    # exception when no restaurant was found (restaurant_id not exist)
+        return render_template('menu.html', menu=menu, restaurant=restaurant)    
     except exc.NoResultFound:
+        # exception when no restaurant was found (restaurant_id not exist)
+        # error only found in manual input direct in URL
         return render_template('pageNotFound.html')
 
 
@@ -96,7 +97,7 @@ def newMenu(restaurant_id):
                              restaurant_id=restaurant_id)
         session.add(new_item)
         session.commit()
-        
+        flash("New Item added!")
         return redirect(url_for('menuRestaurant',restaurant_id=restaurant_id))
     else:
         return render_template('newMenu.html', restaurant_id=restaurant_id,restaurant=restaurant)
@@ -124,6 +125,7 @@ def editMenuItem(restaurant_id, menuitem_id):
 
         session.add(item)
         session.commit()
+        flash("Item edited!")
         return redirect(url_for('menuRestaurant',restaurant_id=restaurant_id))
     
     # when MenuItem(restaurant_id) is different of Restaurant(id)
@@ -141,6 +143,7 @@ def deleteMenuItem(restaurant_id, menuitem_id):
     if restaurant_id == item.restaurant_id and request.method == 'POST':
         session.delete(item)
         session.commit()
+        flash("item deleted!")
         return redirect(url_for('menuRestaurant', restaurant_id=restaurant.id))
     elif restaurant_id != item.restaurant_id:
         return "out of boundaries"
