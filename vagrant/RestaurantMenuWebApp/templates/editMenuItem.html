@@ -32,7 +32,7 @@
                 </tr>
                 <tr>
                     <td><label for="item_price">price($): </label></td>
-                    <td><input type="text" name="item_price" size="31" placeholder="{{item.price}}"></td>
+                    <td><input type="text" name="item_price" size="31" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" placeholder="{{item.price}}"></td>
                 </tr>
                 <tr>
                     <td><label for="item_course">course:</label></td>

@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import exc
 from database_setup import Base, Restaurant, MenuItem
+#import re # to work with regular expression (search in string. examples currency,date,etc)
 
 # DB connection
 engine = create_engine('sqlite:///restaurantmenu.db',connect_args={'check_same_thread': False})
@@ -86,14 +87,9 @@ def menuRestaurant(restaurant_id):
 def newMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
-        if '$' in request.form['new_price']:
-            price = request.form['new_price']
-        else:
-            price = '$'+ request.form['new_price']
-        
         new_item = MenuItem(name=request.form['new_name'],
                              description=request.form['new_description'],
-                             price=price,
+                             price=request.form['new_price'],
                              course=request.form['new_course'],
                              restaurant_id=restaurant_id)
         session.add(new_item)
@@ -121,10 +117,7 @@ def editMenuItem(restaurant_id, menuitem_id):
             if request.form['item_description'] != '':
                 item.description = request.form['item_description']
             if request.form['item_price'] != '':
-                if '$' in request.form['item_price']:
-                    item.price = request.form['item_price']
-                else:
-                    item.price = '$'+request.form['item_price']
+                item.price = request.form['item_price']
             if request.form['item_course'] != '':
                 item.course = request.form['item_course']
 
