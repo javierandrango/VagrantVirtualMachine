@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import exc
@@ -153,6 +153,32 @@ def deleteMenuItem(restaurant_id, menuitem_id):
     else:
         return render_template('deleteMenuItem.html', restaurant=restaurant, item=item)
 
+
+# making API Endpoints
+@app.route('/restaurants/JSON/')
+def jsonRestaurants():
+    # show all restaurants in JSO format
+    restaurants = session.query(Restaurant).all()
+    return jsonify(Restaurants=[i.serialize for i in restaurants ])
+
+@app.route('/restaurants/<int:restaurant_id>/menu/JSON/')
+def jsonMenuRestaurant(restaurant_id):
+    # show specific restaurant in JSON format
+    menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    return {restaurant.name:jsonify([i.serialize for i in menu]).json}
+
+@app.route('/restaurants/<int:restaurant_id>/menu/<int:menuitem_id>/JSON/')
+def jsonMenuItem(restaurant_id, menuitem_id):
+    # show an item menu in JSON format
+    menu = session.query(MenuItem).filter_by(id=menuitem_id).one()
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    if menu.restaurant_id == restaurant_id:
+        return {restaurant.name:jsonify([menu.serialize]).json}
+    else:
+        return render_template('pageNotFound.html')
+
+    
 
 if __name__ == "__main__":
 
