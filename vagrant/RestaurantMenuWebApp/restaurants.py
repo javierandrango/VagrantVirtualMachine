@@ -9,7 +9,7 @@ from database_setup import Base, Restaurant, MenuItem
 engine = create_engine('sqlite:///restaurantmenu.db',connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 DBsession = sessionmaker(bind=engine)
-session = DBsession()
+session = DBsession() 
 
 
 app = Flask(__name__)
