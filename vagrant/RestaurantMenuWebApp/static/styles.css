@@ -58,9 +58,18 @@
 }
 .restaurant-option{
    display: inline-block;
-   
 }
 .restaurant-option button{
    width: 60px;
 }
 
+/*form style*/
+.box{
+   margin: 5px 10px 0px 10px; /*top right botoom left*/
+}
+.form-control{
+   margin-bottom: 8px;
+}
+form .btn{
+   width: 60px;
+}
