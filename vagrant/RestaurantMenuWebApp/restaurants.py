@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, distinct
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import exc
 from database_setup import Base, Restaurant, MenuItem
@@ -73,9 +73,21 @@ def deleteRestaurant(restaurant_id):
 @app.route('/restaurants/<int:restaurant_id>/menu/')
 def menuRestaurant(restaurant_id):
     try:
-        menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
         restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-        return render_template('menu.html', menu=menu, restaurant=restaurant)    
+        menu = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
+
+        # Query to not show duplicates in sqlite3
+        # SQL: SELECT DISTINCT course 
+        #      FROM menuitem 
+        #      WHERE restaurant_id = restaurant_id
+        #      ORDER BY course ASC    
+        # delete the tuple:[('item1',),('item2',)] usig a for statement
+        courses = session.query(MenuItem.course)\
+                        .filter_by(restaurant_id=restaurant_id)\
+                        .distinct().order_by(MenuItem.course.asc())
+        courses = [c for (c,) in courses]
+        print("courses:", len(courses))
+        return render_template('menu.html', restaurant=restaurant, menu=menu, courses=courses)    
     except exc.NoResultFound:
         # exception when no restaurant was found (restaurant_id not exist)
         # error only found in manual input in URL

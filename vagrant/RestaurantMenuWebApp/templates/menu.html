@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menu</title>
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!--local CSS-->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
+    <!--local js-->
+    <script src="{{url_for('static',filename='menu.js')}}" defer></script>
 </head>
 <body>
     <hgroup>
@@ -30,6 +37,7 @@
         </section>
 
         <section>
+            <!--flash messages-->
             {%with messages = get_flashed_messages()%}
             {%if messages%}
                 <ul>
@@ -42,27 +50,34 @@
         </section>
 
         <section>
-            <form action="" method="post">
-                <label for="filter_by">Filter By Course:</label>
-                <select>
+            <!--filter by options-->
+            <label for="filter_by">Filter By Course:</label>
+                <select id="filter-by" onchange="filterContent()">
                     <option value="All">All</option>
+                    {%for course in courses%}
+                        <!--show only course available in DB-->
+                        <option value="{{course}}">{{course}}</option>
+                    {%endfor%}
+                    <!--
                     <option value="Entree">Entree</option>
                     <option value="Dessert">Dessert</option>
                     <option value="Beverage">Beverage</option>
                     <option value="Appetizer">Appetizer</option>
+                    -->
                 </select>
-            </form>    
         </section>
 
-        {%if menu|length == 0%}
+        {%if courses|length == 0%}
             <section>
                 <p>You currently have no menu item</p> 
             </section>
         {%else%}
             <section>
-                {%for course in ['Entree','Dessert','Beverage','Appetizer']%}
-                    <article>
-                        <div><h3>{{course}}</h3></div>
+                {%for course in courses%}
+                    <article class="course {{course}}">
+                        <div>
+                            <h3>{{course}}</h3>
+                        </div>
                         {%for item in menu%}
                             {%if item.course == course%}
                                 <article>
@@ -89,7 +104,6 @@
                             {%endif%}
                         {%endfor%}
                     </article>
-                    <br><br>
                 {%endfor%}   
             </section>
         {%endif%}
