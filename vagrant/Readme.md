@@ -16,8 +16,18 @@ The database contains newspaper articles, as well as the web server log for the 
 
 An HTML file was created to present the report.
 
-## 2. under development
-Under development
+## 2. `RestaurantMenuWebApp`
+Web application using the Flask framework and SQLAlchemy to manage a database of restaurants and their menus.
+The application:
+1. creates new restaurants (new element into the DB)
+2. edit/delete restaurants 
+3. creates a new restaurant menu item
+4. edit/delete restaurant menu item
+5. show restaurant information in JSON format
+6. show restaurant menu information in JSON format
+7. show single menu item information in JSON format
+
+
 
 # Mainteners
-The content described belongs to the owner of this repository and was developed for educational purposes only. files and code were geenerated from scratch following online guides and basic instructions from other repositories.
+The content described belongs to the owner of this repository and was developed for educational purposes only. files and code were generated from scratch following online guides and basic instructions from other repositories.
