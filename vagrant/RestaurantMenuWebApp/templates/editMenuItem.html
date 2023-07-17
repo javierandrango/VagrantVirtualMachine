@@ -29,7 +29,7 @@
             <li class="nav-option"><h3>Edit</h3></li>
         </ol>
     </nav>
-
+    
     <main class="edit-restaurant">
         <!--form edit menu item from restaurant-->
         <form action="{{url_for('editMenuItem',restaurant_id=item.restaurant_id, menuitem_id=item.id)}}" method="post">
@@ -89,7 +89,7 @@
             <menu class="restaurant-options card-body text-center">
                 <!--buttons for edit and cancel menu item-->
                 <button type="submit" class="btn btn-secondary btn-sm">Edit</button>
-                <a href="{{url_for('restaurants')}}">
+                <a href="{{url_for('menuRestaurant',restaurant_id=restaurant.id)}}">
                     <button type="button" class="btn btn-secondary btn-sm">Cancel</button>
                 </a>
             </menu>
