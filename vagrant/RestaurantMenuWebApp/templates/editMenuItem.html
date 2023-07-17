@@ -4,40 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Menu Item</title>
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!--local CSS-->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
+    <!--local js-->
 </head>
 <body>
-    <hgroup>
-        <h1>Edit Menu Item</h1>
-        <h2>{{restaurant.name}}</h2>
+    <hgroup class="card text-center card-body border-0">
+        <h1 class="card-title border-0">Edit Menu Item</h1>
+        <h2 class="card-title">{{restaurant.name}}</h2>
     </hgroup>
 
-    <nav>
+    <nav class="nav-options">
         <ol>
-            <li><h3><a href="{{url_for('restaurants')}}">Home</a></h3></li>
-            <li><h3><a href="{{url_for('menuRestaurant',restaurant_id=restaurant.id)}}">{{restaurant.name}}</a></h3></li>
-            <li><h3>Edit</h3></li>
+            <li class="nav-option">
+                <h3>
+                    <img src="{{url_for('static',filename='icons/restaurant.svg')}}">
+                    <a href="{{url_for('restaurants')}}">Home</a> 
+                </h3>
+            </li>
+            <li class="nav-option"><h3><a href="{{url_for('menuRestaurant',restaurant_id=restaurant.id)}}">{{restaurant.name}}</a></h3></li>
+            <li class="nav-option"><h3>Edit</h3></li>
         </ol>
     </nav>
 
-    <main>
+    <main class="edit-restaurant">
+        <!--form edit menu item from restaurant-->
         <form action="{{url_for('editMenuItem',restaurant_id=item.restaurant_id, menuitem_id=item.id)}}" method="post">
-            <table>
+            <table class="responsive-table">
                 <tr>
                     <td><label for="item_name">name: </label></td>
-                    <td><input type="text" name="item_name" size="31" placeholder="{{item.name}}"></td>
+                    <td><input class="fill-column" type="text" name="item_name"  placeholder="{{item.name}}"></td>
                 </tr>
                 <tr>
                     <td><label for="item_description">description: </label></td>
-                    <td><textarea name="item_description" cols="30" rows="5" placeholder="{{item.description}}"></textarea></td>
+                    <td ><textarea name="item_description"  class="fill-column" rows="5" placeholder="{{item.description}}"></textarea></td>
                 </tr>
                 <tr>
                     <td><label for="item_price">price($): </label></td>
-                    <td><input type="text" name="item_price" size="31" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" placeholder="{{item.price}}"></td>
+                    <td ><input class="fill-column" type="text" name="item_price"  pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" placeholder="{{item.price}}"></td>
                 </tr>
                 <tr>
                     <td><label for="item_course">course:</label></td>
                     <td>
-                        <fieldset>
+                        <fieldset class="course-list">
                             <li>
                                 {%if item.course == 'Appetizer'%}
                                     <input type="radio" name="item_course" value="Appetizer" checked>
@@ -73,11 +85,15 @@
                         </fieldset>
                     </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Edit"></td>
-                </tr>
             </table>
+            <menu class="restaurant-options card-body text-center">
+                <!--buttons for edit and cancel menu item-->
+                <button type="submit" class="btn btn-secondary btn-sm">Edit</button>
+                <a href="{{url_for('restaurants')}}">
+                    <button type="button" class="btn btn-secondary btn-sm">Cancel</button>
+                </a>
+            </menu>
+            <br>
         </form>
     </main>
 </body>

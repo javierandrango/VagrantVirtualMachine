@@ -25,6 +25,5 @@ function filterContent(){
             course[i].style.display = "block";
         }
         
-    }
-    
+    }  
 }

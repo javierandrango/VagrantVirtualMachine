@@ -13,24 +13,31 @@
     <script src="{{url_for('static',filename='menu.js')}}" defer></script>
 </head>
 <body>
-    <hgroup>
-        <h1>{{restaurant.name}}</h1>
-        <h2>Menu</h2>
+
+    <hgroup class="card text-center card-body border-0">
+        <h1 class="card-title border-0">{{restaurant.name}}</h1>
+        <h2 class="card-title">Menu</h2>
     </hgroup>
 
-    <nav>
+    <nav class="nav-options"> 
         <ol>
-            <li><h3><a href="{{url_for('restaurants')}}">Home</a></h3></li>
-            <li><h3>{{restaurant.name}}</h3></li>
+            <li class="nav-option">
+                <h3>
+                    <img src="{{url_for('static',filename='icons/restaurant.svg')}}">
+                    <a href="{{url_for('restaurants')}}">Home</a> 
+                </h3>
+            </li>
+            <li class="nav-option"><h3>{{restaurant.name}}</h3></li>
         </ol>
     </nav>
 
     <main>
-        <section>
+        <!-- rename class new-restaurant-->
+        <section class="new-restaurant">
             <nav>
                 <h3>
                     <a href="{{url_for('newMenu', restaurant_id=restaurant.id)}}">
-                        <button type="button">New Menu Item</button>
+                        <button type="button" class="btn btn-secondary btn-sm">New Menu Item</button>
                     </a>
                 </h3>
             </nav>
@@ -49,58 +56,67 @@
             {%endwith%}
         </section>
 
-        <section>
+        <section class="text-center filter-box">
             <!--filter by options-->
-            <label for="filter_by">Filter By Course:</label>
-                <select id="filter-by" onchange="filterContent()">
-                    <option value="All">All</option>
-                    {%for course in courses%}
-                        <!--show only course available in DB-->
-                        <option value="{{course}}">{{course}}</option>
-                    {%endfor%}
-                    <!--
-                    <option value="Entree">Entree</option>
-                    <option value="Dessert">Dessert</option>
-                    <option value="Beverage">Beverage</option>
-                    <option value="Appetizer">Appetizer</option>
-                    -->
-                </select>
+            <label for="filter-by">Filter By Course:</label>
+            <select  id="filter-by" onchange="filterContent()">
+                <option value="All">All</option>
+                {%for course in courses%}
+                    <!--show only course available in DB-->
+                    <option value="{{course}}">{{course}}</option>
+                {%endfor%}
+                <!--
+                <option value="Entree">Entree</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Beverage">Beverage</option>
+                <option value="Appetizer">Appetizer</option>
+                -->
+            </select>
         </section>
-
+        
         {%if courses|length == 0%}
             <section>
+                <!--flash message-->
                 <p>You currently have no menu item</p> 
             </section>
         {%else%}
             <section>
+                <!--restaurant menu-->
                 {%for course in courses%}
-                    <article class="course {{course}}">
-                        <div>
+                    
+                    <article class="course {{course}} card single-restaurant">
+                        <!--Course container-->
+                        <div class="card-header">
+                            <!--Course name-->
                             <h3>{{course}}</h3>
                         </div>
                         {%for item in menu%}
                             {%if item.course == course%}
-                                <article>
-                                    <div>
-                                        <span><p>{{item.name}}</p></span>
-                                        <span><p>{{item.price}}</p></span> 
+                                <article class="card-body">
+                                    <!--menu item clasified by course-->
+                                    <div class="item-price">
+                                        <span><p class="card-title"><b>{{item.name}}</b></p></span>
+                                        <span><p class="card-text">{{item.price}}</p></span>
                                     </div>
-                                    <div>
-                                        <p>{{item.description}}</p>
+                                    <div class="item-description">
+                                        <p class="description">{{item.description}}</p>
                                     </div>
                                 </article>
-                                <menu>
-                                    <li>
+                                <menu class="restaurant-options card-body text-center">
+                                    <!--buttons for edit and delete menu item-->
+                                    <li class="restaurant-option">
                                         <a href="{{url_for('editMenuItem', restaurant_id=restaurant.id, menuitem_id=item.id)}}">
-                                            <button type="button">Edit</button>
+                                            <button class="btn btn-secondary btn-sm" type="button">Edit</button>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="restaurant-option">
                                         <a href="{{url_for('deleteMenuItem', restaurant_id=restaurant.id, menuitem_id=item.id)}}">
-                                            <button type="button">Delete</button>
+                                            <button class="btn btn-secondary btn-sm" type="button">Delete</button>
                                         </a>
                                     </li>
                                 </menu> 
+                                <!--underline decoration-->
+                                <p class="underline"></p>
                             {%endif%}
                         {%endfor%}
                     </article>

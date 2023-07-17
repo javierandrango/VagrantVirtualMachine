@@ -3,9 +3,6 @@
 /* || Body styles */
 
 /*header*/
-.card-header{
-   background-color: white;
-}
 
 
 /*navigation bar*/
@@ -54,6 +51,7 @@
 }
 .restaurant-options{
    list-style-type:none;
+   margin: 0;
    /*padding-left: 0;*/
 }
 .restaurant-option{
@@ -73,3 +71,42 @@
 form .btn{
    width: 60px;
 }
+
+
+/*restaurant menu*/
+.filter-box{
+   margin-bottom: 10px;
+}
+.description{
+   margin-bottom: 0;
+}
+.underline{
+   border-bottom: 1px solid rgb(228, 228, 228);
+   margin: 0 10px 0 10px; /*top right botoom left*/
+}
+.item-price .card-title{
+   float: left;
+}
+.item-price .card-text{
+   float: right;
+}
+.item-description{
+   clear: both;
+}
+
+/*edit restaurant*/
+.edit-restaurant{
+   margin: 5px 10px 0px 10px; /*top right botoom left*/
+}
+.responsive-table{
+   width: 100%;
+   margin-bottom: 10px;
+}
+
+.fill-column{
+   width: 100%;
+}
+.course-list{
+   list-style-type: none;
+}
+
