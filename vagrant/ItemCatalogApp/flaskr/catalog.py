@@ -1,6 +1,23 @@
 # flask web framework
 from flask import Flask
 
+# DB modules
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from db_setup import Base,User
+
+# flask basic authentication
+from flask_httpauth import HTTPBasicAuth
+
+#DB configuration
+engine = create_engine('sqlite:///catalogBDSetup.db', connect_args={'check_same_thread':False})
+Base.metadata.bind = engine
+DBsession = sessionmaker(bind=engine)
+session = DBsession()
+
+# Basic Auth configuration
+auth = HTTPBasicAuth()
+
 # create flask app
 app = Flask(__name__)
 
