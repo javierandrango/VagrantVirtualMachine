@@ -11,3 +11,12 @@
     ```bash
     pip3 install itsdangerous --user
     ```
+
+# Usage
+1. Add a user to test the login process
+
+    ```bash
+    cd ItemCatalogApp/tests/
+
+    python3 single_user.py
+    ```
