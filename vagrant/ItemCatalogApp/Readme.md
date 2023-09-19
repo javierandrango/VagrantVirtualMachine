@@ -11,7 +11,17 @@
     ```bash
     pip3 install itsdangerous --user
     ```
-
+4. handling Cross Origin Resource Sharing (CORS) security mechanism that restricts resources being fetched from a different origin
+    ```bash
+    pip3 install flask-cors==3.0.10 --user
+    ```
+5. To use ad-hoc certified inside flask with CORS we need the cryptography module
+Previously I deleted this module and re-installed again is a little tricky 
+    ```bash
+    sudo apt install python3-dev build-essential gcc 
+    sudo apt install libssl-dev libffi-dev
+    sudo pip3 install cryptography==3.2.1 
+    ```
 # Usage
 1. Add a user to test the login process
 

@@ -1,8 +1,11 @@
 <!-- login dialog -->
 {% extends 'base.html' %}
 ={% block content %}
+<!--jquery-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <dialog id="loginDialog" >
-    <form action="{{url_for('login')}}" method="post">
+    <!--<form action="{{url_for('login')}}" method="post">-->
         <header>
             <h3>Sing in</h3>
             <button id="closeButton" aria-label="close" formnovalidate>X</button>
@@ -16,18 +19,21 @@
                     <td>____________o____________</td>
                 </tr>
                 <tr>
-                    <td><input type="text" name='username_or_email' placeholder="username or email"></td>
+                    <td><input type="text" name='username_or_email' id ='username_or_email' placeholder="username or email"></td>
                 </tr>
                 <tr>
-                    <td><button type="submit">Next</button></td>
+                    <td><button class="tbn" onclick="verifyUsername()">Next</button></td>
                 </tr>
             </table>
         </article>
         <footer>
               Don't have an account? <a href="">Sign Up</a>  
         </footer>
-    </form>
+    <!--</form>-->
 </dialog>
+
+<!--shows login status messages if exist-->
+<div id="loginStatusMsgs"></div>
 {% endblock %}
 
 
