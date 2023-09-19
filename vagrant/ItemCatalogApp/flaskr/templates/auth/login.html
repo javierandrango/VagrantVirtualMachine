@@ -4,32 +4,62 @@
 <!--jquery-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<dialog id="loginDialog" >
-    <!--<form action="{{url_for('login')}}" method="post">-->
-        <header>
-            <h3>Sing in</h3>
-            <button id="closeButton" aria-label="close" formnovalidate>X</button>
-        </header>
-        <article>
-            <table>
-                <tr>
-                    <td><button type="button">Sign in with google</button></td>
-                </tr>
-                <tr>
-                    <td>____________o____________</td>
-                </tr>
-                <tr>
-                    <td><input type="text" name='username_or_email' id ='username_or_email' placeholder="username or email"></td>
-                </tr>
-                <tr>
-                    <td><button class="tbn" onclick="verifyUsername()">Next</button></td>
-                </tr>
-            </table>
-        </article>
-        <footer>
-              Don't have an account? <a href="">Sign Up</a>  
-        </footer>
-    <!--</form>-->
+<!--login user verification-->
+<dialog id="loginUserDialog" >
+    <header>
+        <h2>Item Catalog</h2>
+        <h3>Sing in</h3>
+        <button id="closeButton" aria-label="close" onclick="closeDialogWithBttn()" formnovalidate>X</button>
+    </header>
+    <article>
+        <table>
+            <tr>
+                <td><button type="button">Sign in with google</button></td>
+            </tr>
+            <tr>
+                <td>____________o____________</td>
+            </tr>
+            <tr>
+                <td><input type="text" name='username_or_email' id ='username_or_email' placeholder="username or email"></td>
+            </tr>
+            <tr>
+                <td><button class="tbn" onclick="verifyUsername()">Next</button></td>
+            </tr>
+        </table>
+    </article>
+    <footer>
+          Don't have an account? <a href="">Sign Up</a>  
+    </footer>
+</dialog>
+
+<!--login pswd verification-->
+<dialog id="loginPswdDialog" >
+    <header>
+        <h2>Item Catalog</h2>
+        <h3>Sing in</h3>
+        <button id="closeButton" aria-label="close" onclick="closeDialogWithBttn()" formnovalidate>X</button>
+    </header>
+    <article>
+        <table>
+            <tr>
+                <td><input type="text" name='username' id ='username' disabled></td>
+            </tr>
+            <tr>
+                <td><input type="text" name='pswd' id ='pswd' placeholder="password"></td>
+            </tr>
+        </table>
+        <a href="">forgot password?</a>
+    </article>
+    <footer>
+        <table>
+            <tr>
+                <td><button class="tbn" onclick="verifyPswd()">login</button></td>
+            </tr>
+            <tr>
+                Don't have an account? <a href="">Sign Up</a>  
+            </tr>
+        </table>
+    </footer>
 </dialog>
 
 <!--shows login status messages if exist-->
