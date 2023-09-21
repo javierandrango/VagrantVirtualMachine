@@ -25,7 +25,9 @@ session = DBsession()
 auth = HTTPBasicAuth()
 
 # create flask app 
-app = Flask(__name__)
+app = Flask(__name__, 
+            template_folder = '../frontend/templates/', 
+            static_folder = '../frontend/static')
 # Enable CORS if making cross-origin requests in all routes
 CORS(app)
 
@@ -60,7 +62,9 @@ def username_or_email():
 
 
 # login: pswd verification
-
+@app.route('/login/verify_pswd', methods=['POST'])
+def pswd_verification():
+    return jsonify
 
 # login: send flash messages to client
 @app.route('/login/flash_msgs', methods=['GET','POST'])
