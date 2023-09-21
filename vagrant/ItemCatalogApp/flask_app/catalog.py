@@ -27,7 +27,7 @@ auth = HTTPBasicAuth()
 # create flask app 
 app = Flask(__name__, 
             template_folder = '../frontend/templates/', 
-            static_folder = '../frontend/static')
+            static_folder = '../frontend/static/')
 # Enable CORS if making cross-origin requests in all routes
 CORS(app)
 

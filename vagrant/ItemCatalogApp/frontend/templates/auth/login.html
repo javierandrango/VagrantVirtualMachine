@@ -1,15 +1,11 @@
-<!-- login dialog -->
 {% extends 'base.html' %}
 ={% block content %}
-<!--jquery-->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <!--login user verification-->
 <dialog id="loginUserDialog" >
     <header>
         <h2>Item Catalog</h2>
         <h3>Sing in</h3>
-        <button id="closeButton" aria-label="close" onclick="closeDialogWithBttn()" formnovalidate>X</button>
+        <button class="closeButton" id="closeBtn1" aria-label="close" formnovalidate>X</button>
     </header>
     <article>
         <table>
@@ -23,7 +19,7 @@
                 <td><input type="text" name='username_or_email' id ='username_or_email' placeholder="username or email"></td>
             </tr>
             <tr>
-                <td><button class="tbn" onclick="verifyUsername()">Next</button></td>
+                <td><button class="tbn" id="nextBtn">Next</button></td>
             </tr>
         </table>
     </article>
@@ -37,7 +33,7 @@
     <header>
         <h2>Item Catalog</h2>
         <h3>Sing in</h3>
-        <button id="closeButton" aria-label="close" onclick="closeDialogWithBttn()" formnovalidate>X</button>
+        <button class="closeButton" id="closeBtn2" aria-label="close" formnovalidate>X</button>
     </header>
     <article>
         <table>
@@ -53,7 +49,7 @@
     <footer>
         <table>
             <tr>
-                <td><button class="tbn" onclick="verifyPswd()">login</button></td>
+                <td><button class="tbn" id="loginBtn">login</button></td>
             </tr>
             <tr>
                 Don't have an account? <a href="">Sign Up</a>  
@@ -65,6 +61,3 @@
 <!--shows login status messages if exist-->
 <div id="loginStatusMsgs" style="display: none;"></div>
 {% endblock %}
-
-
-<!--input password dialog-->

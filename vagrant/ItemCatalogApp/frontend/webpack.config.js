@@ -2,13 +2,13 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development', //change this value to production when the project is completed
+    //mode: 'development', //change this value to production when the project is completed
     entry: {
         //js
         main: './src/main.js',
-        dialog: '/src/components/dialog.js',
+        dialog: './src/components/dialog.js',
         //css
-        styles: '/src/styles/styles.css',
+        styles: './src/styles/styles.css',
     },
     output: {
         filename: 'js/[name].js',

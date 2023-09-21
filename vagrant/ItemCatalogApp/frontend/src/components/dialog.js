@@ -1,24 +1,59 @@
-// first login dialog variables
+/**
+ * MODULES
+ */
+import $ from 'jquery';
+
+
+/**
+ * VARIABLES
+ */
+// login dialog variables
 const loginButton = document.getElementById('loginButton');
 const loginUserDialog = document.getElementById('loginUserDialog');
 const loginPswdDialog = document.getElementById('loginPswdDialog');
-//input text id username
-const $username = $('#username');
-//div container for flash message
-const $loginFlashMsg = $('#loginStatusMsgs');
+const closeBtn1 = document.getElementById('closeBtn1');
+const closeBtn2 = document.getElementById('closeBtn2');
+const nextBtn = document.getElementById('nextBtn');
 
 
-//string format function
-String.prototype.format = function () {
-    var i = 0, args = arguments;
-    return this.replace(/{}/g, function () {
-      return typeof args[i] != 'undefined' ? args[i++] : '';
+/**
+ * HANDLING EVENTS
+ */
+//open login dialog (username verification)
+if (loginButton){
+loginButton.addEventListener("click",()=>{
+    localStorage.setItem('openDialogFlag', 'true');
+});
+};
+// keep login dialog open when button click
+if(loginUserDialog || loginPswdDialog){
+    loginUserDialogOpen();
+    loginPswdDialogOpen();
+}; 
+
+//close dialogs
+if (closeBtn1){
+    closeBtn1.addEventListener("click", ()=>{
+        closeDialogWithBttn1();
     });
-  };
+};
+if (closeBtn2){
+    closeBtn2.addEventListener("click", ()=>{
+        closeDialogWithBttn2();
+    });
+};
+//username or email validation
+if (nextBtn){
+    nextBtn.addEventListener("click", ()=>{
+        verifyUsername();
+    });
+};
 
 
+/**
+ * ----- USER DEFINED FUNCTIONS -----
+ */
 //check dialog status
-/*
 function checkDialog(dialog){
     if(dialog.open){
         console.log("login Dialog Open")
@@ -27,22 +62,16 @@ function checkDialog(dialog){
         console.log("login Dialog closed")
     }
 };
-*/
-//open login dialog (username verification)
-if (loginButton){
-    loginButton.addEventListener("click",()=>{
-        localStorage.setItem('openDialogFlag', 'true');
-    });
-}
-//keep dialog open
+//keep username dialog open
 function loginUserDialogOpen(){
     let status = localStorage.getItem('openDialogFlag');
     if (status ==='true'){
         loginUserDialog.showModal();
-        //checkDialog(loginUserDialog);
+        checkDialog(loginUserDialog);
         localStorage.setItem('openDialogFlag','false');
     }
 };
+//keep pswd dialog open
 function loginPswdDialogOpen(){
     let status = localStorage.getItem('openPswdDialogFlag');
     if (status ==='true'){
@@ -50,19 +79,19 @@ function loginPswdDialogOpen(){
         localStorage.setItem('openPswdDialogFlag','false');
     }
 };
-// open login dialog with button 
-loginUserDialogOpen();
-
 //close the login dialog
-function closeDialogWithBttn(){
+function closeDialogWithBttn1(){
     localStorage.setItem('openDialogFlag','false');
-    localStorage.setItem('openPswdDialogFlag','false');
     loginUserDialog.close();
+};
+function closeDialogWithBttn2(){
+    localStorage.setItem('openPswdDialogFlag','false');
     loginPswdDialog.close();
 };
-
 // username or email validation
 function verifyUsername(){
+    const $username = $('#username'); //input text id username
+    const $loginFlashMsg = $('#loginStatusMsgs'); //div container for flash message
     const username_or_email = document.getElementById('username_or_email').value;
     fetch('/login/verify_username_or_email/',{
         method: 'POST',
@@ -75,10 +104,10 @@ function verifyUsername(){
     .then(response => response.json())
     .then(data=>{
         if(data.username){
-            loginUserDialog.close()
+            loginUserDialog.close();
             localStorage.setItem('openPswdDialogFlag', 'true');
             $username.val(data.username);
-            loginPswdDialogOpen();
+            loginPswdDialogOpen(loginPswdDialog);
         }
         else{
             document.getElementById('username_or_email').value = "";
@@ -92,11 +121,15 @@ function verifyUsername(){
     })
 };
 
+/*
 //pswd hashing
 async function pswdHash(pswd){
-    
+    console.log("hashing pswd here")
 };
 // pswd verification
+document.getElementById('loginBtn').addEventListener('click', verifyPswd);
 function verifyPswd(){
-
+    pswdHash();
+    console.log("verify pswd hashed here")
 };
+*/
