@@ -2,7 +2,7 @@
  * MODULES
  */
 import $ from 'jquery';
-
+let bcrypt = require('bcryptjs');
 
 /**
  * VARIABLES
@@ -54,20 +54,20 @@ if (nextBtn){
  * ----- USER DEFINED FUNCTIONS -----
  */
 //check dialog status
-function checkDialog(dialog){
+/*function checkDialog(dialog){
     if(dialog.open){
         console.log("login Dialog Open")
     }
     else{
         console.log("login Dialog closed")
     }
-};
+};*/
 //keep username dialog open
 function loginUserDialogOpen(){
     let status = localStorage.getItem('openDialogFlag');
     if (status ==='true'){
         loginUserDialog.showModal();
-        checkDialog(loginUserDialog);
+        //checkDialog(loginUserDialog);
         localStorage.setItem('openDialogFlag','false');
     }
 };
@@ -90,8 +90,8 @@ function closeDialogWithBttn2(){
 };
 // username or email validation
 function verifyUsername(){
-    const $username = $('#username'); //input text id username
-    const $loginFlashMsg = $('#loginStatusMsgs'); //div container for flash message
+    const $username = $('#username'); //to add the username in disabled input
+    const $loginFlashMsg = $('#loginStatusMsgs'); //to add flash messages
     const username_or_email = document.getElementById('username_or_email').value;
     fetch('/login/verify_username_or_email/',{
         method: 'POST',
@@ -120,16 +120,32 @@ function verifyUsername(){
         }
     })
 };
-
-/*
 //pswd hashing
-async function pswdHash(pswd){
+/*async function pswdHash(pswd){
     console.log("hashing pswd here")
-};
+    let salt = bcrypt.gen
+    return pswd_hash
+};*/
 // pswd verification
 document.getElementById('loginBtn').addEventListener('click', verifyPswd);
 function verifyPswd(){
-    pswdHash();
-    console.log("verify pswd hashed here")
+    const inputPswd = document.getElementById('pswd').value;
+    console.log("inptu Pswd: ",inputPswd);
+    const $loginFlashMsg = $('#loginStatusMsgs'); //to add flash messages
+    bcrypt.genSalt(10, function(err,salt){
+        if (err){
+            console.log("error generating salt:",err);
+        };
+
+        bcrypt.hash(inputPswd,salt,function(err,hash){
+        
+            if(err){
+                console.log("error hashong password: ",err)
+            };
+
+            console.log("salt: ",salt);
+            console.log("hash: ",hash);
+        });
+    });
 };
-*/
+
