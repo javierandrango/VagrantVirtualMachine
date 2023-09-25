@@ -1,5 +1,6 @@
 # DB modules
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 
@@ -11,21 +12,25 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
 import random, string
 
+# data base migration modules 
+from alembic import context
+
 # create DB base
 Base = declarative_base()
 
 # generate a random secret key of lenght 32
 secret_key = ''.join(random.choice(string.ascii_uppercase+string.digits) for _ in range(32))
 
-
 # DB tables
+# user table
 class User (Base):
     __tablename__ = 'user'
     id= Column(Integer, primary_key=True)    
     username= Column(String(32), index = True)
     email= Column(String(320))
-    picture= Column(String)
+    picture= Column(String) 
     password_hash= Column(String(64))
+    password_salt= Column(String(64))
 
     # store hash from a password
     def hash_password(self, password):
@@ -55,5 +60,13 @@ class User (Base):
         user_id = data['id']
         return user_id
 
-engine = create_engine('sqlite:///catalogDBSetup.db')
+
+engine = create_engine('sqlite:///../catalogDBSetup.db')
 Base.metadata.create_all(engine) 
+
+'''
+if __name__ == '__main__':
+    #add new item-colum in User Table
+    with engine.connect() as conn:
+        conn.execute("INSERT INTO user (password_salt) VALUES ('1234')")
+'''    

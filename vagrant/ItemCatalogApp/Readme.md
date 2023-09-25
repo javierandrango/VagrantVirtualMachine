@@ -22,11 +22,14 @@ Previously I deleted this module and re-installed again is a little tricky
     sudo apt install libssl-dev libffi-dev
     sudo pip3 install cryptography==3.2.1 
     ```
+6. Update database (migrate changes in data base):
+    ```bash
+    pip3 install alembic==1.4.3 --user
+    ```
 # Usage
 1. Add a user to test the login process
 
     ```bash
     cd ItemCatalogApp/tests/
-
     python3 single_user.py
     ```

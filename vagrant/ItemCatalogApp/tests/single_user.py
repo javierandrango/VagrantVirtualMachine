@@ -2,8 +2,8 @@
 import sys
 import os
 current_dir = os.path.dirname(os.path.abspath(__file__))
-flaskr_path = os.path.join(current_dir, '..', 'flaskr')
-sys.path.append(flaskr_path)
+flask_app_path = os.path.join(current_dir, '..', 'flask_app')
+sys.path.append(flask_app_path)
 
 # ORM modules
 from sqlalchemy import create_engine
@@ -27,4 +27,3 @@ user1 = User(
 user1.hash_password('javier')
 session.add(user1)
 session.commit()
-

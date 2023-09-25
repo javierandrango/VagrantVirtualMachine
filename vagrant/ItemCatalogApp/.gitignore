@@ -11,3 +11,6 @@ node_modules/
 #other files
 *.txt
 
+# alembic directory and file
+#alembic/
+#*.ini
