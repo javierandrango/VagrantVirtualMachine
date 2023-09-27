@@ -14,7 +14,7 @@ const loginPswdDialog = document.getElementById('loginPswdDialog');
 const closeBtn1 = document.getElementById('closeBtn1');
 const closeBtn2 = document.getElementById('closeBtn2');
 const nextBtn = document.getElementById('nextBtn');
-
+const loginBtn = document.getElementById('loginBtn');
 
 /**
  * HANDLING EVENTS
@@ -48,7 +48,12 @@ if (nextBtn){
         verifyUsername();
     });
 };
-
+//password validation
+if(loginBtn){
+    loginBtn.addEventListener("click",()=>{
+        verifyPswd();
+    })
+};
 
 /**
  * ----- USER DEFINED FUNCTIONS -----
@@ -120,32 +125,42 @@ function verifyUsername(){
         }
     })
 };
-//pswd hashing
-/*async function pswdHash(pswd){
-    console.log("hashing pswd here")
-    let salt = bcrypt.gen
-    return pswd_hash
-};*/
 // pswd verification
-document.getElementById('loginBtn').addEventListener('click', verifyPswd);
 function verifyPswd(){
     const inputPswd = document.getElementById('pswd').value;
     console.log("inptu Pswd: ",inputPswd);
     const $loginFlashMsg = $('#loginStatusMsgs'); //to add flash messages
+    // hashing pswd
     bcrypt.genSalt(10, function(err,salt){
         if (err){
             console.log("error generating salt:",err);
         };
-
         bcrypt.hash(inputPswd,salt,function(err,hash){
-        
             if(err){
                 console.log("error hashong password: ",err)
             };
-
             console.log("salt: ",salt);
             console.log("hash: ",hash);
         });
     });
+    
+    bcrypt.compare(inputPswd,'$2a$10$e/kHhQ3bNuDono.BlbSb/.I95SnVD69PkfOIQbvrg58DTS.InHBem',function(err,result){
+        if (err){
+            console.log("error checking password")
+        }
+        if(result){
+            console.log('result',result) //result return True or False
+            console.log('password verified')
+        }
+        else{
+            console.log("incorrect password")
+        }
+    });
+
+    //backend verification
+    fetch('',{})
+    .then()
+    .then()
+
 };
 
