@@ -26,6 +26,10 @@ Previously I deleted this module and re-installed again is a little tricky
     ```bash
     pip3 install alembic==1.4.3 --user
     ```
+7. Make requests for test endpoints
+    ```bash
+    pip3 install httplib2 --user
+    ```
 # Usage
 1. Add a user to test the login process
 

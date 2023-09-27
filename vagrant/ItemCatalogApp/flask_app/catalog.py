@@ -1,11 +1,13 @@
 # flask web framework
-from flask import Flask,render_template, request, redirect,url_for,flash,jsonify
+from flask import Flask,render_template, request, redirect,url_for,flash,\
+                    jsonify,g,abort
+from flask import session as temp_session
 
 #security
 from flask_cors import CORS
 
 # DB modules
-from sqlalchemy import create_engine, or_
+from sqlalchemy import create_engine, or_, and_
 from sqlalchemy.orm import sessionmaker
 from db_setup import Base,User
 
@@ -13,7 +15,7 @@ from db_setup import Base,User
 from sqlalchemy.orm import exc
 
 # flask basic authentication
-from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth,HTTPTokenAuth
 
 #DB configuration
 engine = create_engine('sqlite:///../catalogDBSetup.db', connect_args={'check_same_thread':False})
@@ -21,8 +23,9 @@ Base.metadata.bind = engine
 DBsession = sessionmaker(bind=engine)
 session = DBsession()
 
-# Basic Auth configuration
-auth = HTTPBasicAuth()
+# Login Auth configuration
+basic_auth = HTTPBasicAuth()
+token_auth = HTTPTokenAuth(scheme='Bearer')
 
 # create flask app 
 app = Flask(__name__, 
@@ -51,26 +54,60 @@ def username_or_email():
     if request.method == 'POST':
         username_or_email = request.json.get('username_or_email')
         username = verify_username(username_or_email)
-        print('DB usrname:', username)
+        print('DB username:', username)
         # empty imput or wrong username
         if not(username_or_email) or not(username):
             #flash("Sorry, we could not find your account.")
             message = "Sorry, we could not find your account."
-
-        print()
     return jsonify({'username': username, 'message':message})
 
+# login: password verification
+@basic_auth.verify_password
+def pswd_verification(username,pswd_hash):
+    g.user = session.query(User).filter(and_(User.username==username,
+                                            User.password_hash==pswd_hash)).first()
+    if(not g.user):
+        temp_session['pswd_error_msg']='Wrong Password'
+        return False
+    return g.user.username
 
-# login: pswd verification
+# login: granted access after password verification to generate an access token
 @app.route('/login/verify_pswd', methods=['POST'])
-def pswd_verification():
-    return jsonify
+@basic_auth.login_required
+def get_access_token():
+    message = ''
+    if request.method == 'POST':
+        if (not basic_auth.current_user()):
+            abort(400)
+        token = g.user.generate_auth_token()
+        message = temp_session.get('pswd_error_msg')
+        #print('access token: ',token)
+    return jsonify({'token':token,'message':message}), 200
+
+# login: verify access token 
+@token_auth.verify_token
+def verify_acess_token(token):
+    user_id = User.verify_auth_token(token)
+    if (not user_id):
+        return False   
+    g.user = session.query(User).filter_by(id=user_id).first()     
+    return True
+
+# login: granted access after access token verification (for test purposes)
+@app.route('/login/protected_resource', methods=['GET'])
+@token_auth.login_required
+def get_resource():
+    if request.method == 'GET':
+        print(g.user.username)
+    return jsonify({'protected resource': 'hello '+g.user.username}), 200
+
 
 # login: send flash messages to client
 @app.route('/login/flash_msgs', methods=['GET','POST'])
 def get_flash_msgs():
     flash_msgs = dict(session['_flashes']) 
     return jsonify(flash_msgs)
+
 
 # user functions
 def verify_username(username_or_email):

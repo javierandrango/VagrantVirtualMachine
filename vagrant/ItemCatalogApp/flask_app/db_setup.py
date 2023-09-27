@@ -33,12 +33,12 @@ class User (Base):
     password_salt= Column(String(64))
 
     # store hash from a password
-    def hash_password(self, password):
-        self.password_hash = pwd_context.hash(password)
+    #def hash_password(self, password):
+    #    self.password_hash = pwd_context.hash(password)
     
     # verify password
-    def verify_password(self,password):
-        return pwd_context.verify(password,self.password_hash)
+    #def verify_password(self,password):
+    #    return pwd_context.verify(password,self.password_hash)
     
     # encoded auth token
     def generate_auth_token(self):
