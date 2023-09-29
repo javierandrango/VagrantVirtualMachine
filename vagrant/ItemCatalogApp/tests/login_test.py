@@ -1,7 +1,11 @@
-from urllib.parse import urlencode
+# make requests
 from httplib2 import Http
 import json
 import sys
+
+# encode data
+import base64
+
 
 #first user credentials:
 username = 'javier'
@@ -15,13 +19,18 @@ if address == '':
 
 # TEST 1: try to get token with INVALID credentials
 try:
-    url = address + '/login/verify_pswd'
+    url = address + '/login/verify_pswd/'
     # only for test purposes disable ssl certified
     h = Http(disable_ssl_certificate_validation=True)
     invalid_hash = hash+'.234s$'
-    h.add_credentials(username,invalid_hash) 
-    data = json.dumps(dict(username=username,password_hash=invalid_hash))
-    resp, content = h.request(url,'POST',body=data,headers={"Content-Type": "application/json"})
+    credentials = username+':'+invalid_hash
+    credentials64 = base64.b64encode(credentials.encode('utf-8')).decode()
+    data={}
+    headers={
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic '+ credentials64,
+    }
+    resp, content = h.request(url,'POST',body=data,headers=headers)
     if resp['status'] =='200':
         raise Exception('Security Flaw: able to log in with INVALID credentials') 
 except Exception as err:
@@ -34,12 +43,17 @@ else:
 
 # TEST 2: try to get token with VALID credentials
 try:
-    url = address + '/login/verify_pswd'
+    url = address + '/login/verify_pswd/'
     # only for test purposes disable ssl certified
     h = Http(disable_ssl_certificate_validation=True)
-    h.add_credentials(username,hash) 
-    data = json.dumps(dict(username=username,password_hash=hash))
-    resp, content = h.request(url,'POST',body=data,headers={"Content-Type": "application/json"})
+    credentials = username+':'+hash
+    credentials64 = base64.b64encode(credentials.encode('utf-8')).decode()
+    data={}
+    headers={
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic '+ credentials64,
+    }
+    resp, content = h.request(url,'POST',body=data,headers=headers)
     if resp['status'] !='200':
         raise Exception('Unable to get token with VALID credentials') 
     token = json.loads(str(content,'UTF-8'))['token']
