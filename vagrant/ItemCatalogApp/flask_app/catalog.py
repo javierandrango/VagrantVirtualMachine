@@ -80,6 +80,7 @@ def pswd_verification(username,pswd_hash):
 
 # login: status code handling for bad credentials
 @basic_auth.error_handler
+@token_auth.error_handler
 def unauthorized():
     '''
     # this code prevent browser default login prompt to open when status 
@@ -119,14 +120,14 @@ def verify_acess_token(token):
     return True
 
 # login: granted access after access token verification (for test purposes)
-@app.route('/login/protected_resource', methods=['GET'])
+@app.route('/login/protected_resource/', methods=['GET'])
 @token_auth.login_required
 def get_resource():
     if request.method == 'GET':
         #print(g.user.username)
         temp_session['username'] = g.user.username
         temp_session['picture'] = g.user.picture
-    return jsonify({'protected resource': 'hello '+g.user.username}), 200
+    return jsonify({'protected_resource': 'hello '+g.user.username}), 200
 
 
 # login: send flash messages to client

@@ -187,7 +187,8 @@ function verifyPswd(){
         })
         .then(data=>{
             if(data){
-                console.log("data:",data)
+                //console.log("data:",data)
+                tokenAccess(data.token)
                 //close username dialog
                 loginPswdDialog.close();
             }
@@ -202,4 +203,24 @@ function verifyPswd(){
         },1500);
     })
 };
-
+// to access protected resource with token
+function tokenAccess(token){
+    fetch('/login/protected_resource/',{
+        method: 'GET',
+        credentials:'include',
+        headers:{
+            'Content-Type': 'application/json',
+            //'Origin': window.location.origin,
+            "Authorization": "Bearer "+token
+        },
+    })
+    .then(response=>{
+        if(response.status==200){
+            return response.json();
+        }
+    })
+    .then(data=>{
+        console.log("protected resource: ",data.protected_resource)
+    })
+    .catch()
+};
