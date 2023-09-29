@@ -30,6 +30,11 @@ Previously I deleted this module and re-installed again is a little tricky
     ```bash
     pip3 install httplib2 --user
     ```
+8. Hash password 
+    ```bash
+    pip3 install bcrypt --user
+    ```
+
 # Usage
 1. Add a user to test the login process
 
