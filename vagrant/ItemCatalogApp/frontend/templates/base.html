@@ -14,19 +14,29 @@
 </head>
 
 <body>
-    <header>
-        header menu here
-        <ul class="user-section">
+    <header id="app-header">
+        <h1 id="app-name">
+            <img src="{{url_for('static',filename='icons/app-icon.svg')}}">
+            <a href="">Catalog App</a>
+        </h1> 
+        
+        <ul id="user-section">
             <li>
                 <a href="{{url_for('login')}}">
-                    <button type="button" class="btn btn-secondary btn-sm" id="loginButton">Login</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="loginButton">Sign in</button>
                 </a>
             </li>
-            <li><button type="button" class="btn btn-secondary btn-sm">Register</button></li>
+            <li>
+                <a href="">
+                    <button type="button" class="btn btn-secondary btn-sm">Sign up</button>
+                </a>
+            </li>
+            <li id="vertical-line"></li>
         </ul>
     </header>
 
     <main>
+        <img src="{{url_for('static',filename='images/blank_user.gif')}}">
         <!--login dialog-->
         {% block content %}
         <!--show login dialog when the 'loginButton' is pressed-->

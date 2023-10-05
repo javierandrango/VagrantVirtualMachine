@@ -1,4 +1,54 @@
-/*styles*/
-.user-section{
+/**
+* HEADER
+*/
+#app-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60px;
+    /*background-color: yellow;*/
+    /*underline*/
+    border-bottom: 1px solid rgb(228, 228, 228);
+    /*margin: 0 20px 0 20px; /*top right botoom left*/
+}
+#app-name{
+    width: 50%;
+    margin: 2px;
+    padding: 10px;
+     
+}
+#app-name>a{
+    /*hide default underline in link*/  
+    text-decoration: none;
+    color: black;
+}
+#user-section{
     list-style-type: none;
+    width: 50%;
+    margin: 2px;
+    padding: 10px;
+    /*control buttons position*/
+    display: inline-block;
+    overflow: auto;
+}
+#user-section>li{
+    /*control buttons position*/
+    float: right;
+}
+#vertical-line{
+    /*vertical line decoration*/
+    border-right: 1px solid rgb(228, 228, 228);
+    height: 50px;
+    margin: 0 10px;
+
+}
+.btn{
+    /*button dimmension*/
+    width: 65px;
+    height: 35px;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 6.25px;
+    text-align: center;
 }

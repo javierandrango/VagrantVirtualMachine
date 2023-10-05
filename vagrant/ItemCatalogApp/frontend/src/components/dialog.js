@@ -203,7 +203,8 @@ function verifyPswd(){
         },1500);
     })
 };
-// to access protected resource with token
+
+// access protected resource with token
 function tokenAccess(token){
     fetch('/login/protected_resource/',{
         method: 'GET',
@@ -220,7 +221,9 @@ function tokenAccess(token){
         }
     })
     .then(data=>{
-        console.log("protected resource: ",data.protected_resource)
+        console.log("protected resource: ",data)
     })
-    .catch()
+    .catch(error=>{
+        console.log("error:",error)
+    })
 };

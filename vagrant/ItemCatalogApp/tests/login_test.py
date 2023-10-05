@@ -94,7 +94,7 @@ try:
     resp, content = h.request(url,'GET',headers=headers)
     if resp['status'] !='200':
         raise Exception('Unable to access protected API resource with valid token')
-    print("protected resource:", json.loads(str(content,'UTF-8'))['protected resource']) 
+    print("protected resource:", json.loads(str(content,'UTF-8'))['protected_resource']) 
 except Exception as err:
     print('TEST 4 FAILED!')
     print(err.args)

@@ -14,7 +14,7 @@ from db_setup import Base,User
 # DB exceptions modules
 from sqlalchemy.orm import exc
 
-# flask basic authentication
+# flask basic,token authentication
 from flask_httpauth import HTTPBasicAuth,HTTPTokenAuth
 
 # verify hashed password
@@ -38,7 +38,7 @@ app = Flask(__name__,
 # Enable CORS if making cross-origin requests in all routes
 CORS(app)
 
-  
+
 # app routes
 # main page
 @app.route('/')
@@ -78,6 +78,7 @@ def pswd_verification(username,pswd_hash):
         return True
     return False
 
+
 # login: status code handling for bad credentials
 @basic_auth.error_handler
 @token_auth.error_handler
@@ -95,7 +96,8 @@ def unauthorized():
     response = jsonify(message="Unauthorized. This is a protected resource")
     response.status_code = 400
     return response
-    
+
+
 # login: granted access after password verification to generate an access token
 @app.route('/login/verify_pswd/', methods=['POST'])
 @basic_auth.login_required
@@ -110,6 +112,7 @@ def get_access_token():
         #print('access token: ',token)
         return jsonify({'token':token,'message':message}), status_code
 
+
 # login: verify access token 
 @token_auth.verify_token
 def verify_acess_token(token):
@@ -118,6 +121,7 @@ def verify_acess_token(token):
         return False   
     g.user = session.query(User).filter_by(id=user_id).first()     
     return True
+
 
 # login: granted access after access token verification (for test purposes)
 @app.route('/login/protected_resource/', methods=['GET'])
@@ -153,7 +157,7 @@ def verify_username(username_or_email):
 
 # to run app in comand line
 # SSL/TLS encryptation for development and testing: adhoc
-# secret_key temporarily use flask message (CHANGE KEY)
+# secret_key temporarily used for flask message (CHANGE KEY)
 if __name__ == "__main__":
     app.debug = True
     app.secret_key = 'secret_key'
