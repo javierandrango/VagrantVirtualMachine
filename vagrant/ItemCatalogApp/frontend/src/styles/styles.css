@@ -1,7 +1,7 @@
 /**
 * HEADER
 */
-#app-header{
+.app-header{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -12,18 +12,18 @@
     border-bottom: 1px solid rgb(228, 228, 228);
     /*margin: 0 20px 0 20px; /*top right botoom left*/
 }
-#app-name{
+.app-name{
     width: 50%;
     margin: 2px;
     padding: 10px;
      
 }
-#app-name>a{
+.app-name>a{
     /*hide default underline in link*/  
     text-decoration: none;
     color: black;
 }
-#user-section{
+.user-section{
     list-style-type: none;
     width: 50%;
     margin: 2px;
@@ -32,11 +32,11 @@
     display: inline-block;
     overflow: auto;
 }
-#user-section>li{
+.user-section>li{
     /*control buttons position*/
     float: right;
 }
-#vertical-line{
+.vertical-line{
     /*vertical line decoration*/
     border-right: 1px solid rgb(228, 228, 228);
     height: 50px;
@@ -51,4 +51,26 @@
     margin-left: 5px;
     margin-top: 6.25px;
     text-align: center;
+}
+
+/**
+* HEADER(ACTIVE ACCOUNT) 
+*/
+.img-container{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /*fit image inside circle*/
+    overflow: hidden;
+    /*background-color: green;*/
+}
+.img-blank-user{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.nav-link.dropdown-toggle::after {
+    /*hidde dropdown menu arrow*/
+    display: none;
 }
