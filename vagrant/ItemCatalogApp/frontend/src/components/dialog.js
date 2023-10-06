@@ -2,6 +2,7 @@
  * MODULES
  */
 import $ from 'jquery';
+import { user_info } from './info.js';
 let bcrypt = require('bcryptjs');
 
 /**
@@ -189,6 +190,8 @@ function verifyPswd(){
             if(data){
                 //console.log("data:",data)
                 tokenAccess(data.token)
+                //imported function to update active user info
+                user_info(data.token)
                 //close username dialog
                 loginPswdDialog.close();
             }

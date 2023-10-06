@@ -130,8 +130,19 @@ def get_resource():
     if request.method == 'GET':
         #print(g.user.username)
         temp_session['username'] = g.user.username
-        temp_session['picture'] = g.user.picture
     return jsonify({'protected_resource': 'hello '+g.user.username}), 200
+
+# login: required user data to show in frotend
+@app.route('/login/user_info/', methods=['GET'])
+@token_auth.login_required
+def user_info():
+    if request.method == 'GET':
+        temp_session['username'] = g.user.username
+        temp_session['picture'] = g.user.picture
+        temp_session['email'] = g.user.email            
+    return jsonify({'username':temp_session.get('username'),
+                    'picture':temp_session.get('picture'),
+                    'email':temp_session.get('email')})
 
 
 # login: send flash messages to client

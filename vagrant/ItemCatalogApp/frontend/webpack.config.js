@@ -7,6 +7,7 @@ module.exports = {
         //js
         main: './src/main.js',
         dialog: './src/components/dialog.js',
+        info: './src/components/info.js',
         //css
         styles: './src/styles/styles.css',
         //images
