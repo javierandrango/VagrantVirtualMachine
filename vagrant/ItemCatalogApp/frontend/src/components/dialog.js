@@ -189,7 +189,8 @@ function verifyPswd(){
         .then(data=>{
             if(data){
                 //console.log("data:",data)
-                tokenAccess(data.token)
+                //tokenAccess(data.token)
+
                 //imported function to update active user info
                 user_info(data.token)
                 //close username dialog
@@ -207,7 +208,8 @@ function verifyPswd(){
     })
 };
 
-// access protected resource with token
+// access protected resource with token (for test purposes)
+/*
 function tokenAccess(token){
     fetch('/login/protected_resource/',{
         method: 'GET',
@@ -230,3 +232,4 @@ function tokenAccess(token){
         console.log("error:",error)
     })
 };
+*/

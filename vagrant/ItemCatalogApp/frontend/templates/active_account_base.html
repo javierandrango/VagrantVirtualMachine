@@ -10,22 +10,18 @@
     <!--local CSS-->
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/styles.css')}}">
     <!--local js-->
-    <script src="{{url_for('static',filename='js/dialog.js')}}" defer></script>
+<script src="{{url_for('static',filename='js/dialog.js')}}" defer></script>
 </head>
 
 <body>
     <!--public header-->
-    {% include "./header/header.html" %}
-    
+    {% include "./header/active_account_header.html" %}
     <!--main content-->
     <main>
         <div>
             the main content goes here
         </div>
-        <!--login dialog-->
-        {% block content %}
-        <!--show login dialog when the 'loginButton' is pressed-->
-        {% endblock %}
     </main>
 </body>
+
 </html>

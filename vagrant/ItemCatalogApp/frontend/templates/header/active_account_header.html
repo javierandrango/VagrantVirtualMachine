@@ -1,0 +1,36 @@
+<!--active account header-->
+<header class="app-header">
+    <h1 class="app-name">
+        <img src="{{url_for('static',filename='icons/app-icon.svg')}}">
+        <a href="">Catalog App</a>
+    </h1> 
+    
+    <ul class="user-section">
+        <li class="nav-item-dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                <div class="img-container">
+                    <img class="img-blank-user" src="{{picture}}">
+                    <!--<img class="img-blank-user" src="{{url_for('static',filename='images/blank_user.gif')}}">-->
+                </div>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img class="img-blank-user" src="{{picture}}">
+                        </div>
+                        <div class="col-md-8">
+                            <p id="active-username">{{username}}</p>
+                            <p id="active-email">{{email}}</p>
+                        </div>
+                    </div>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a href="">logout</a>
+                </li>
+            </ul>
+        </li>
+        <li class="vertical-line"></li>
+    </ul>
+</header>

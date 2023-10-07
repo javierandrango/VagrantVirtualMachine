@@ -43,7 +43,13 @@ CORS(app)
 # main page
 @app.route('/')
 def main_page():
-    return render_template('base.html')
+    if 'username' not in temp_session:
+        return render_template('base.html')
+    else:
+        return render_template('active_account_base.html',
+                               username=temp_session.get('username'),
+                               picture=temp_session.get('picture'),
+                               email=temp_session.get('email'))
 
 # login: render template
 @app.route('/login/')
@@ -124,6 +130,7 @@ def verify_acess_token(token):
 
 
 # login: granted access after access token verification (for test purposes)
+'''
 @app.route('/login/protected_resource/', methods=['GET'])
 @token_auth.login_required
 def get_resource():
@@ -131,25 +138,31 @@ def get_resource():
         #print(g.user.username)
         temp_session['username'] = g.user.username
     return jsonify({'protected_resource': 'hello '+g.user.username}), 200
+'''
 
-# login: required user data to show in frotend
+# login: required user data to update active account header
 @app.route('/login/user_info/', methods=['GET'])
 @token_auth.login_required
 def user_info():
     if request.method == 'GET':
         temp_session['username'] = g.user.username
-        temp_session['picture'] = g.user.picture
-        temp_session['email'] = g.user.email            
-    return jsonify({'username':temp_session.get('username'),
-                    'picture':temp_session.get('picture'),
-                    'email':temp_session.get('email')})
-
+        temp_session['picture'] = g.user.picture 
+        temp_session['email'] = g.user.email        
+    return jsonify({'username':g.user.username}),200
 
 # login: send flash messages to client
+'''
 @app.route('/login/flash_msgs', methods=['GET','POST'])
 def get_flash_msgs():
     flash_msgs = dict(session['_flashes']) 
     return jsonify(flash_msgs)
+'''
+
+# logout
+@app.route('/logout/')
+def logout():
+    temp_session.clear()
+    return redirect(url_for('main_page'))
 
 
 # user functions

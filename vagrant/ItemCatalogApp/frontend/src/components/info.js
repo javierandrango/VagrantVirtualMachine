@@ -17,34 +17,29 @@ import $ from 'jquery';
  */
 
 export function user_info(token){
-    //active account header tags
-    const $img = $('.img-blank-user'); //to update the user image
-    const $username = $('#active-username'); //to update active username
-    const $email = $('#active-email'); //to update active email
-
-    fetch('/login/user_info/',{
-        method: 'GET',
-        credentials:'include',
-        headers:{
-            'Content-Type': 'application/json',
-            "Authorization": "Bearer "+token
-        },
-    })
-    .then(response=>{
-        if(response.status==200){
-            return response.json();
-        }
-    })
-    .then(data=>{
-        //console.log("user_info:",data)
-        //update user photo
-        $img.attr("src",data.picture);
-        //update user username
-        $username.text(data.username);
-        //update user email
-        $email.text(data.email);
-    })
-    .catch(error=>{
-        console.log("error:",error)
-    })
+    const baseUrl = window.location.origin; // get the base URL (https://localhost:80000)
+    $(function () {
+        fetch('/login/user_info/',{
+            method: 'GET',
+            credentials:'include',
+            headers:{
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer "+token
+            },
+        })
+        .then(response=>{
+            if(response.status==200){
+                console.log("response ok")
+                window.location.href = `${baseUrl}/`
+                
+            }
+            else{
+                console.log("request failed with status:", response.status)
+            }
+        })
+        .catch(error=>{
+            console.log("error:",error)
+        })
+    });
+    
 };

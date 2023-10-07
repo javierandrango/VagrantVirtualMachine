@@ -1,0 +1,21 @@
+<!--principal page header-->
+<header class="app-header">
+    <h1 class="app-name">
+        <img src="{{url_for('static',filename='icons/app-icon.svg')}}">
+        <a href="">Catalog App</a>
+    </h1> 
+    
+    <ul class="user-section">
+        <li>
+            <a href="{{url_for('login')}}">
+                <button type="button" class="btn btn-secondary btn-sm" id="loginButton">Sign in</button>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <button type="button" class="btn btn-secondary btn-sm">Sign up</button>
+            </a>
+        </li>
+        <li class="vertical-line"></li>
+    </ul>
+</header>
