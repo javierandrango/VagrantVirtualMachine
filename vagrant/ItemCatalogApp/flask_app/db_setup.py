@@ -60,6 +60,8 @@ class User (Base):
         user_id = data['id']
         return user_id
 
+# adding new tables no migration required (alembic)
+
 class Categories(Base):
     __tablename__='category'
     id = Column(Integer, primary_key=True) 
