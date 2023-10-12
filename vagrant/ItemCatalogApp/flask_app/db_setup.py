@@ -1,6 +1,6 @@
 # DB modules
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 
@@ -59,6 +59,41 @@ class User (Base):
             return None
         user_id = data['id']
         return user_id
+
+class Categories(Base):
+    __tablename__='category'
+    id = Column(Integer, primary_key=True) 
+    user_id = Column(Integer, ForeignKey('user.id'))
+    name = Column(String(64), nullable=False)
+    user = relationship(User)
+    
+    # share information in json format
+    @property
+    def serialize(self):
+        return{
+            'id':self.id,
+            'name':self.name,
+        }
+
+class ItemCategory(Base):
+    __tablename__='itemcategory'
+    id = Column(Integer, primary_key=True)
+    category_id = Column(Integer, ForeignKey('category.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    item = Column(String(64), nullable=False)
+    description = Column(String, nullable=False)
+    user = relationship(User)
+    category = relationship(Categories)
+
+    # share information in json format
+    @property
+    def serialize(self):
+        return{
+            'category id':self.category_id,
+            'item id':self.id,
+            'item':self.item,
+            'description':self.description,
+        }
 
 
 engine = create_engine('sqlite:///../catalogDBSetup.db')
