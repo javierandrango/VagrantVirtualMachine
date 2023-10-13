@@ -34,6 +34,10 @@ Previously I deleted this module and re-installed again is a little tricky
     ```bash
     pip3 install bcrypt --user
     ```
+9. Google authentication library
+    ```bash
+    pip3 install google-auth --user
+    ```
 
 # Usage
 1. Add a user to test the login process

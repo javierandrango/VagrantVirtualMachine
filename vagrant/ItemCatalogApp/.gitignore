@@ -10,7 +10,7 @@ node_modules/
 
 #other files
 *.txt
-
+.env
 # alembic directory and file
 #alembic/
 #*.ini

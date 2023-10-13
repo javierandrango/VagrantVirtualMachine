@@ -1,6 +1,6 @@
 # flask web framework
-from flask import Flask,render_template, request, redirect,url_for,flash,\
-                    jsonify,g,abort
+from flask import Flask,render_template, request, redirect,url_for,\
+                    jsonify,g,current_app,abort
 from flask import session as temp_session
 
 #security
@@ -20,6 +20,11 @@ from flask_httpauth import HTTPBasicAuth,HTTPTokenAuth
 # verify hashed password
 import bcrypt
 
+# oauth2 providers
+from auth import Providers
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+
 #DB configuration
 engine = create_engine('sqlite:///../catalogDBSetup.db', connect_args={'check_same_thread':False})
 Base.metadata.bind = engine
@@ -35,9 +40,11 @@ app = Flask(__name__,
             template_folder = '../frontend/templates/', 
             static_folder = '../frontend/static/')
 
+# import oauth configuration from auth.py
+app.config.from_object(Providers)
+
 # Enable CORS if making cross-origin requests in all routes
 CORS(app)
-
 
 # app routes
 # main page
@@ -164,6 +171,42 @@ def logout():
     temp_session.clear()
     return redirect(url_for('main_page'))
 
+# login with google: response 
+@app.route('/login/callback/google',methods=['POST'])
+def oauth2_google():
+    if request.method =='POST':
+        '''
+        # show all request content that has application/x-www-form-urlencoded format
+        for key, value in request.form.items():
+                print('Field: {}, Value: {}'.format(key,value))
+        '''
+        #print('credential:',request.form.get('credential'))
+        #print('cookies:',request.cookies)
+
+        # Verify the Cross-Site Request Forgery (CSRF) token
+        csrf_token_cookie = request.cookies.get('g_csrf_token')
+        #print('csrf_token_cookie',csrf_token_cookie)
+        if not csrf_token_cookie:
+            abort(400,'No CSRF token in Cookie.')
+        csrf_token_body = request.form.get('g_csrf_token')
+        #print('csrf_token_body',csrf_token_body)
+        if not csrf_token_body:
+            abort(400,'No CSRF token in post body.')
+        if csrf_token_cookie != csrf_token_body:
+            abort(400,'Failed to verify double submit cookie.')
+        
+        # validate ID token 
+        credential = request.form.get('credential')
+        provider_data = current_app.config['OAUTH2_PROVIDERS'].get('google')
+        client_id = provider_data['client_id']
+        try:
+            idinfo = id_token.verify_oauth2_token(credential,google_requests.Request(),client_id)
+            temp_session['username'] = idinfo['name']
+            temp_session['email'] = idinfo['email']
+            temp_session['picture'] = idinfo['picture']
+        except ValueError:
+            abort(400,'Failed to authenticate user')
+    return redirect(url_for('main_page'))
 
 # user functions
 def verify_username(username_or_email):
@@ -177,7 +220,6 @@ def verify_username(username_or_email):
         username = None
         salt = None
     return username,salt
-
 
 # to run app in comand line
 # SSL/TLS encryptation for development and testing: adhoc
