@@ -206,6 +206,16 @@ def oauth2_google():
             temp_session['picture'] = idinfo['picture']
         except ValueError:
             abort(400,'Failed to authenticate user')
+        
+        # save google user in database if not exist
+        google_user = session.query(User).filter_by(email=idinfo['email']).first()
+        if (google_user is None):
+            new_user = User(username=idinfo['name'],
+                            email=idinfo['email'],
+                            picture=idinfo['picture'])
+            session.add(new_user)
+            session.commit()
+        
     return redirect(url_for('main_page'))
 
 # user functions
