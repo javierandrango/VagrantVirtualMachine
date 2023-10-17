@@ -8,6 +8,7 @@ module.exports = {
         main: './src/main.js',
         dialog: './src/components/dialog.js',
         info: './src/components/info.js',
+        signup: './src/components/signup.js',
         //css
         styles: './src/styles/styles.css',
         //images

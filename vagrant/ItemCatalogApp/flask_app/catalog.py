@@ -47,6 +47,7 @@ app.config.from_object(Providers)
 CORS(app)
 
 # app routes
+# ----------------------------------------------------------------------------
 # main page
 @app.route('/')
 def main_page():
@@ -57,7 +58,9 @@ def main_page():
                                username=temp_session.get('username'),
                                picture=temp_session.get('picture'),
                                email=temp_session.get('email'))
+# ----------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 # login: render template
 @app.route('/login/')
 def login():
@@ -164,13 +167,17 @@ def get_flash_msgs():
     flash_msgs = dict(session['_flashes']) 
     return jsonify(flash_msgs)
 '''
+# ----------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 # logout
 @app.route('/logout/')
 def logout():
     temp_session.clear()
     return redirect(url_for('main_page'))
+# ----------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 # login with google: response 
 @app.route('/login/callback/google',methods=['POST'])
 def oauth2_google():
@@ -215,9 +222,19 @@ def oauth2_google():
                             picture=idinfo['picture'])
             session.add(new_user)
             session.commit()
-        
-    return redirect(url_for('main_page'))
 
+    return redirect(url_for('main_page'))
+# ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+# signup: render template
+@app.route('/signup/')
+def signup():
+    return render_template('/auth/signup.html')
+
+# ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
 # user functions
 def verify_username(username_or_email):
     try:
@@ -230,7 +247,9 @@ def verify_username(username_or_email):
         username = None
         salt = None
     return username,salt
+# ----------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 # to run app in comand line
 # SSL/TLS encryptation for development and testing: adhoc
 # secret_key temporarily used for flask message (CHANGE KEY)
@@ -238,3 +257,4 @@ if __name__ == "__main__":
     app.debug = True
     app.secret_key = 'secret_key'
     app.run(host='0.0.0.0', port=8000, ssl_context='adhoc') 
+# ----------------------------------------------------------------------------

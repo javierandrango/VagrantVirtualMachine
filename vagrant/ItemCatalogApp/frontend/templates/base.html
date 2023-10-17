@@ -10,8 +10,9 @@
     <!--local CSS-->
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/styles.css')}}">
     <!--local js-->
-    <script src="{{url_for('static',filename='js/dialog.js')}}" defer></script> <!--singin and singup dialog-->
     <script src="https://accounts.google.com/gsi/client" async></script> <!--login with google button client library-->
+    <script src="{{url_for('static',filename='js/dialog.js')}}" defer></script> <!--singin dialog-->
+    <script src="{{url_for('static',filename='js/signup.js')}}" defer></script> <!--singup dialog-->
 </head>
 
 <body>

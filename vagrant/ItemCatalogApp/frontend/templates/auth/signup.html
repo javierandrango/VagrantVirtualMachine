@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--Step 1: Create account-->
+<dialog id="createAccountDialog" >
+    <header>
+        <button class="closeButton" id="closeDialogBtn" aria-label="close" formnovalidate>X</button>
+        <h2>Step 1 of X</h2>
+    </header>
+    <article>
+        <table>
+            <tr>
+                <td>
+                    <h1>Create your Acount</h1>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name='new_name' class ='newUsername' placeholder="name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name='new_email' class ='newEmail' placeholder="email">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="tbn" id="nextDialogBtn1">Next</button> 
+                </td>
+            </tr>
+        </table>
+    </article>
+</dialog>
+
+<!--Step 2: Agreed terms-->
+<dialog id="agreeTermsDialog" >
+    <header>
+        <button class="returnBtn" id="returnBtn1" aria-label="return" formnovalidate> &larr; </button>
+        <h2>Step 2 of X</h2>
+    </header>
+    <article>
+        <table>
+            <tr>
+                <td>
+                    <h1>Create your Acoount</h1>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name='name' class ='newUsername' placeholder="name" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name='new_email' class ='newEmail' placeholder="email" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam consectetur dolorem porro quisquam odit, tempora corrupti optio atque accusantium. Quibusdam explicabo quam, eligendi eius harum enim iusto repellat dicta minima.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="tbn" id="signUpBtn">Sign Up</button>
+                </td>
+            </tr>
+        </table>
+    </article>
+</dialog>
+
+<!--Step 3: Email code verification-->
+<dialog id="emailCodeDialog" >
+    <header>
+        <button class="returnBtn" id="returnBtn2" aria-label="return" formnovalidate>&larr;</button>
+        <h2>Step 3 of X</h2>
+    </header>
+    <article>
+        <table>
+            <tr>
+                <td>
+                    <h1>We send you a code</h1>
+                    <p>
+                        <span>Enter the code below to verify</span>
+                        <span id="returnEmail">email@email.com</span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name='code' id ='verificationCode' placeholder=" verification code">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="tbn" id="nextDialogBtn2">Next</button>
+                </td>
+            </tr>
+        </table>
+    </article>
+</dialog>
+
+<!--Step 4: New password-->
+<dialog id="newPasswordDialog" >
+    <header>
+        <h2>Step 4 of X</h2>
+    </header>
+    <article>
+        <table>
+            <tr>
+                <td>
+                    <h1>You will need a password</h1>
+                    <p>
+                        <span>Be sure it is 8 characters or more</span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name='new_password' id ='newPassword' placeholder="Password">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name='confirm_password' id ='confirmPassword' placeholder="Confirm Password">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="tbn" id="nextDialogBtn3">Next</button>
+                </td>
+            </tr>
+        </table>
+    </article>
+</dialog>
+
+<!--Upload an image-->
+<dialog id="newUserImageDialog" >
+    <header>
+        <h2>Item Catalog App</h2>
+    </header>
+    <article>
+        <table>
+            <tr>
+                <td>
+                    <h1>Choose a profile picture</h1>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="img-blank-user" src="{{url_for('static',filename='images/blank_user.gif')}}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="tbn" id="skipBtn">Skip for now</button>
+                </td>
+            </tr>
+        </table>
+    </article>
+</dialog>
+
+<!--shows sign up status messages if exist-->
+<div id="signUpStatusMsgs" style="display: none;"></div>
+
+{% endblock %}
