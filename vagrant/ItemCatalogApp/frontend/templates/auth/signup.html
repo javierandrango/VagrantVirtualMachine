@@ -15,12 +15,12 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" name='new_name' class ='newUsername' placeholder="name">
+                    <input type="text" name='new_name' class ='newUsername' id="inputUsername" placeholder="name">
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type="text" name='new_email' class ='newEmail' placeholder="email">
+                    <input type="text" name='new_email' class ='newEmail' id="inputEmail" placeholder="email">
                 </td>
             </tr>
             <tr>
@@ -47,12 +47,12 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" name='name' class ='newUsername' placeholder="name" disabled>
+                    <input type="text" name='name' class ='newUsername' id="checkedUsername" placeholder="name" disabled>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type="text" name='new_email' class ='newEmail' placeholder="email" disabled>
+                    <input type="text" name='new_email' class ='newEmail' id="checkedEmail" placeholder="email" disabled>
                 </td>
             </tr>
             <tr>
@@ -161,6 +161,6 @@
 </dialog>
 
 <!--shows sign up status messages if exist-->
-<div id="signUpStatusMsgs" style="display: none;"></div>
+<div class="statusMsgs" id="signUpStatusMsgs" style="display: none;"></div>
 
 {% endblock %}

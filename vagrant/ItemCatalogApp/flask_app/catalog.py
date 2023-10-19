@@ -232,6 +232,43 @@ def oauth2_google():
 def signup():
     return render_template('/auth/signup.html')
 
+# sign up: verify if user and email already exist
+@app.route('/signup/verify-new-user/', methods=['POST'])
+def check_new_user():
+    email_msg = ''
+    if request.method == 'POST':
+        #print('request email:',request.json.get('email'))
+        user_exist = check_new_user(request.json.get('email'))
+    if (user_exist is not None):
+        email_msg = 'email already exist'
+    return jsonify({'email_msg':email_msg}),200
+
+# sign up: save new user information
+@app.route('/signup/newuser', methods=['POST'])
+def new_user():
+    if request.method == 'POST':
+        completed_form = request.json.get('completed_form')
+        user_data = request.get_json()
+        #print("form status:", completed_form)
+        #print("new user data:",user_data)
+        if (completed_form == False):
+            new_user = User()
+            if 'new_username' in user_data:
+                new_user.username = user_data['new_username']
+            if 'new_email' in user_data:
+                new_user.email = user_data['new_email']
+            if 'new_picture' in user_data:
+                new_user.username = user_data['new_picture']
+            if 'new_password_hash' in user_data:
+                new_user.username = user_data['new_password_hash']
+            if 'new_password_salt' in user_data:
+                new_user.username = user_data['new_password_salt']
+            session.add(new_user)
+            return jsonify({'form status':'INcomplete'}),200
+        elif(completed_form == True):
+            session.commit()
+            return jsonify({'form status':'complete'}),200
+         
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
@@ -247,6 +284,15 @@ def verify_username(username_or_email):
         username = None
         salt = None
     return username,salt
+
+# verify if email already exist or used by other user
+def check_new_user(email):
+    try:
+        this_user = session.query(User).filter_by(email=email).one()
+    except exc.NoResultFound:
+        this_user = None
+    return this_user
+
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
