@@ -1,7 +1,7 @@
 # Python-related files and directories
 *.db
 __pycache__
-
+.json
 # node_modules directory (javascript dependencies)
 node_modules/
 

@@ -3,6 +3,9 @@ from flask import Flask,render_template, request, redirect,url_for,\
                     jsonify,g,current_app,abort
 from flask import session as temp_session
 
+#flash messages
+from flask import flash
+
 #security
 from flask_cors import CORS
 
@@ -20,10 +23,22 @@ from flask_httpauth import HTTPBasicAuth,HTTPTokenAuth
 # verify hashed password
 import bcrypt
 
+# import OTP (One time password)
+import pyotp
+
+# to create a state code
+import random
+import string
+
 # oauth2 providers
+#import os
 from auth import Providers
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
+#from google.oauth2 import id_token
+#from google.auth.transport import requests as google_requests
+#from google_auth_oauthlib.flow import Flow
+
+# make requests
+import requests
 
 #DB configuration
 engine = create_engine('sqlite:///../catalogDBSetup.db', connect_args={'check_same_thread':False})
@@ -178,15 +193,18 @@ def logout():
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
+'''
 # login with google: response 
 @app.route('/login/callback/google',methods=['POST'])
 def oauth2_google():
     if request.method =='POST':
         '''
+'''
         # show all request content that has application/x-www-form-urlencoded format
         for key, value in request.form.items():
                 print('Field: {}, Value: {}'.format(key,value))
         '''
+'''
         #print('credential:',request.form.get('credential'))
         #print('cookies:',request.cookies)
 
@@ -225,7 +243,7 @@ def oauth2_google():
 
     return redirect(url_for('main_page'))
 # ----------------------------------------------------------------------------
-
+'''
 # ----------------------------------------------------------------------------
 # signup: render template
 @app.route('/signup/')
@@ -268,8 +286,112 @@ def new_user():
         elif(completed_form == True):
             session.commit()
             return jsonify({'form status':'complete'}),200
-         
+
+
+@app.route('/signup/otp-email/')
+def otp_email():
+    return ""
 # ----------------------------------------------------------------------------
+'''
+# ----------------------------------------------------------------------------
+# login as admin to use google api
+# login admin: authorize access to gmail API
+@app.route('/admin/authorize/google-apis')
+def gmail_API():
+    state_token = ''.join(random.choice(string.ascii_uppercase+string.digits) for x in range(32))
+    provider_data = current_app.config['OAUTH2_PROVIDERS'].get('google')
+    client_config={
+        "web":{
+            "client_id":provider_data['admin_client_id'],
+            "client_secret":provider_data['admin_client_secret'],
+            "redirect_uris": "https://localhost:8000/admin/callback/google-apis",
+            "auth_uri":provider_data['authorize_url'],
+            "token_uri":provider_data['token_url'],
+        }
+    }
+    scopes=["https://www.googleapis.com/auth/gmail.send"]
+    flow = Flow.from_client_config(client_config,scopes)
+    flow.redirect_uri = "https://localhost:8000/admin/callback/google-apis"
+    authorization_url, state_from_response = flow.authorization_url(
+        # Enable offline access so that you can refresh an access token without
+        # re-prompting the user for permission. Recommended for web server apps.
+        access_type='offline',
+        # state code
+        state = state_token,
+        # user trying to authenticate
+        login_hint='labiarobotico593@gmail.com',
+        # display an authentication or consent screen
+        prompt='consent',
+        # Enable incremental authorization. Recommended as a best practice.
+        include_granted_scopes='true',
+    )
+
+    temp_session['authorization_state'] = state_from_response
+    temp_session['scopes'] = scopes
+    temp_session['client_config'] = client_config
+
+    return redirect(authorization_url)
+
+# admin login: callback to exchange authorization with token to acess APIs
+@app.route('/admin/callback/google-apis')
+def google_apis_callback():
+    #authorization server response
+    state = temp_session.get('authorization_state')
+    client_config = temp_session.get('client_config')
+    scopes = temp_session.get('scopes')
+    flow = Flow.from_client_config(client_config,scopes=scopes,state=state)
+    flow.redirect_uri = "https://localhost:8000/admin/callback/google-apis"
+    # Use the authorization server's response to fetch the OAuth 2.0 tokens
+    authorization_response = request.url
+    print("request url:",request.url)
+    flow.fetch_token(authorization_response=authorization_response)
+    
+    # store credentials 
+    credentials = credentials_to_dict(flow.credentials)
+    temp_session['credentials'] = credentials
+    return jsonify(credentials)
+
+# admin logout: revoke access
+@app.route('/admin/revoke/google-apis')
+def revoke_gapi():
+    credentials = temp_session.get('credentials')
+    if ('token' in credentials):
+        url = 'https://oauth2.googleapis.com/revoke'
+        params={'token': credentials['token']}
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        revoke = requests.post(url,params=params,headers=headers)    
+        if revoke.status_code == 200:
+            flash("API access revoked")
+            return redirect (url_for('main_page'))
+        else:
+            return ("An error occur.")
+    else:
+        flash("No admin logged in")
+        return redirect (url_for('main_page'))
+    
+# admin logout : remove credentials from session
+@app.route('/admin/clear-session')
+def clear_session():
+    # show all information saved in flask session
+    '''
+'''
+    for i in list(temp_session.keys()):
+        print(i)
+    '''
+'''
+    temp_session.pop('client_config', default=None)
+    temp_session.pop('authorization_state', default=None)
+    temp_session.pop('credentials', default=None)
+    temp_session.pop('scopes', default=None)
+    flash("admin credentials deleted")
+    return redirect (url_for('main_page'))
+# ----------------------------------------------------------------------------
+'''
+
+# ----------------------------------------------------------------------------
+# send emails as admin
+# ----------------------------------------------------------------------------
+
 
 # ----------------------------------------------------------------------------
 # user functions
@@ -293,6 +415,18 @@ def check_new_user(email):
         this_user = None
     return this_user
 
+# convert credentials to use google API into a dictionary
+def credentials_to_dict(credentials):
+  return {'token': credentials.token,
+          'refresh_token': credentials.refresh_token,
+          'token_uri': credentials.token_uri,
+          'client_id': credentials.client_id,
+          'client_secret': credentials.client_secret,
+          'scopes': credentials.scopes}
+
+# send email with OTP code to verify new user email
+def send_email(OTP_code):
+ return ""
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
@@ -302,5 +436,6 @@ def check_new_user(email):
 if __name__ == "__main__":
     app.debug = True
     app.secret_key = 'secret_key'
+    #os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     app.run(host='0.0.0.0', port=8000, ssl_context='adhoc') 
 # ----------------------------------------------------------------------------

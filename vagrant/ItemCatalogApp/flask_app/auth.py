@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 class Providers(object):
     OAUTH2_PROVIDERS={
     # Google OAuth 2.0 documentation:
@@ -6,6 +8,8 @@ class Providers(object):
     'google': {
         'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
         'client_secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
+        'admin_client_id': os.environ.get('ADMIN_GOOGLE_CLIENT_ID'),
+        'admin_client_secret': os.environ.get('ADMIN_GOOGLE_CLIENT_SECRET'),
         'authorize_url': 'https://accounts.google.com/o/oauth2/auth',
         'token_url': 'https://accounts.google.com/o/oauth2/token',
         'userinfo': {

@@ -34,11 +34,20 @@ Previously I deleted this module and re-installed again is a little tricky
     ```bash
     pip3 install bcrypt --user
     ```
-9. Google authentication library
+9. Google authentication and API library
     ```bash
     pip3 install google-auth --user
+    pip3 install google-auth-oauthlib --user
+    pip install google-api-python-client==1.12.11 protobuf==3.19.6 --user
     ```
-
+10. load environment variables
+    ```bash
+    pip3 install python-dotenv --user
+    ``` 
+11. Generate OTP code (generating and verifying one-time passwords)
+    ```bash
+    pip3 install pyotp --user
+    ```
 # Usage
 1. Add a user to test the login process
 
